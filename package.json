@@ -1,0 +1,29 @@
+{
+  "name": "typhlopidae",
+  "version": "0.1.0",
+  "dependencies": {
+    "2ch-trip": "^1.0.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.1",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "prettier": "^1.14.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.119",
+    "@types/node": "^10.12.10",
+    "puppeteer": "^1.14.0",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.2.2"
+  },
+  "lint-staged": {
+    "scripts/**/*.ts": [
+      "prettier --config ./.prettierrc --write",
+      "git add"
+    ]
+  },
+  "private": true,
+  "scripts": {
+    "hosyu": "ts-node scripts/hosyu.ts"
+  }
+}
