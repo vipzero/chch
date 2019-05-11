@@ -1,6 +1,7 @@
 {
   "name": "chch",
   "version": "0.1.2",
+  "author": "vipzero",
   "dependencies": {
     "2ch-trip": "^1.0.1",
     "holiday-jp": "^1.0.0",
