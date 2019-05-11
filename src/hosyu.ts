@@ -56,10 +56,10 @@ async function main(threadURL: string, text: string) {
   const now = new Date()
   const next = nextIntervalMinute(now)
   console.log(`posted: ${now} next: ${next}min`)
-  setTimeout(main, next * 60 * 1000)
+  setTimeout(() => main(threadURL, text), next * 60 * 1000)
 }
 
-function hosyu(threadURL: string, text: string, intervalMs: number) {
+function hosyu(threadURL: string, text: string) {
   console.log(startText)
   main(threadURL, text)
 }

@@ -27,5 +27,5 @@ const cli = meow(
 
 switch (cli.input[0]) {
   case "hosyu":
-    hosyu(cli.input[1], cli.flags.text || "ほ", 5 * 60 * 1000 + 10)
+    hosyu(cli.input[1], cli.flags.text || "ほ")
 }
