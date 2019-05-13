@@ -1,4 +1,4 @@
-import puppeteer, { Page } from "puppeteer"
+import * as puppeteer from "puppeteer"
 import holiday from "holiday-jp"
 import { hosyuIntervalTimeMinute } from "./util"
 
@@ -29,7 +29,7 @@ function nextIntervalMinute(date: Date): number {
   return hosyuIntervalTimeMinute(date.getHours(), isHoliday(date))
 }
 
-let page: Page | undefined = undefined
+let page: puppeteer.Page | undefined = undefined
 
 async function main(threadURL: string, text: string) {
   const browser = await puppeteer.launch({
