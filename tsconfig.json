@@ -1,13 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es7", "dom", "es2017"],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "target": "es6",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -15,5 +10,6 @@
     "noEmit": true,
     "noImplicitAny": false,
     "jsx": "preserve"
-  }
+  },
+  "include": ["src/**/*"]
 }

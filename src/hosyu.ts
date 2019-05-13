@@ -1,4 +1,4 @@
-import * as puppeteer from "puppeteer"
+import puppeteer from "puppeteer"
 import holiday from "holiday-jp"
 import { hosyuIntervalTimeMinute } from "./util"
 
