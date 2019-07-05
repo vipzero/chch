@@ -56,7 +56,14 @@ async function main(threadURL: string, text: string) {
   const now = new Date()
   const next = nextIntervalMinute(now)
   console.log(`posted: ${now} next: ${next}min`)
-  setTimeout(() => main(threadURL, text), next * 60 * 1000)
+  setTimeout(
+    () =>
+      main(
+        threadURL,
+        "ほ" + "さしすせそ".split("")[Math.floor(Math.random() * 5)]
+      ),
+    next * 60 * 1000
+  )
 }
 
 function hosyu(threadURL: string, text: string) {
