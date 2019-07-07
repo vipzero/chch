@@ -49,8 +49,8 @@ type Res = {
   comma: number
   message: string
 }
-const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1562479977/"
-async function getThread(url: string) {
+
+export async function getThread(url: string) {
   const $ = cheerio.load((await axios.get(url)).data)
   const ress: Res[] = []
   $(".post").map((i, elA) => {
@@ -76,8 +76,3 @@ async function getThread(url: string) {
   })
   return ress
 }
-
-getThread(url).then(ress => {
-  const toj = a => JSON.stringify(a, null, "\t")
-  console.log(toj(ress))
-})
