@@ -1,6 +1,8 @@
 import cheerio from "cheerio"
 import { Iconv } from "iconv"
 import axios from "axios"
+import dayjs from "dayjs"
+
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
@@ -40,27 +42,42 @@ export async function getThreads() {
 }
 
 type Res = {
-  text: string
-  time: number
+  number: number
+  name: string
+  userId: string
+  timestamp: number
   comma: number
+  message: string
 }
-const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/"
+const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1562479977/"
 async function getThread(url: string) {
   const $ = cheerio.load((await axios.get(url)).data)
   const ress: Res[] = []
   $(".post").map((i, elA) => {
     const div = $(elA)
+    const number = div.find(".number").text()
+    const name = div.find(".name").text()
+    const userId = div.find(".userid").text()
     const dateStr = div.find(".date").text()
+    const timestamp = +dayjs(dateStr)
     const comma = Number(dateStr.split(".")[1])
+    const message = div
+      .find(".message")
+      .text()
+      .trim()
     ress.push({
-      text: "todo",
-      time: 0,
+      number,
+      name,
+      userId,
+      timestamp,
       comma,
+      message,
     })
   })
   return ress
 }
 
 getThread(url).then(ress => {
-  console.log(ress.map(res => res.comma).join("\n"))
+  const toj = a => JSON.stringify(a, null, "\t")
+  console.log(toj(ress))
 })
