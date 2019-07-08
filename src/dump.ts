@@ -20,12 +20,12 @@ function titleParse(text: string): { title: string; count: number } | null {
 
   return { title: m[1], count: Number(m[2]) }
 }
-type Thread = { id: string; title: string; url: string; count: number }
+type ThreadMin = { id: string; title: string; url: string; count: number }
 
 export async function getThreads() {
   const res = await axios.get(listPageUrl)
   const $ = cheerio.load(res.data)
-  const threads: Thread[] = []
+  const threads: ThreadMin[] = []
   $("#trad > a").map((i, elA) => {
     const a = $(elA)
     const res = titleParse(a.text())
@@ -41,7 +41,7 @@ export async function getThreads() {
   return threads
 }
 
-type Res = {
+type Post = {
   number: number
   name: string
   userId: string
@@ -50,9 +50,24 @@ type Res = {
   message: string
 }
 
-export async function getThread(url: string) {
+type Thread = {
+  title: string
+  url: string
+  postCount: number
+  size: string
+  posts: Post[]
+}
+
+export async function getThread(url: string): Promise<Thread> {
   const $ = cheerio.load((await axios.get(url)).data)
-  const ress: Res[] = []
+
+  const title = $(".title")
+    .text()
+    .trim()
+  const postCount = parseInt($(".pagestats .menujust .metastats")[0].innerText)
+  const size = $(".pagestats .menujust .metastats")[1].innerText
+
+  const posts: Post[] = []
   $(".post").map((i, elA) => {
     const div = $(elA)
     const number = div.find(".number").text()
@@ -65,7 +80,7 @@ export async function getThread(url: string) {
       .find(".message")
       .text()
       .trim()
-    ress.push({
+    posts.push({
       number,
       name,
       userId,
@@ -74,5 +89,11 @@ export async function getThread(url: string) {
       message,
     })
   })
-  return ress
+  return {
+    title,
+    url,
+    postCount,
+    size,
+    posts,
+  }
 }
