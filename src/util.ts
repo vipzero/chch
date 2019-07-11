@@ -40,10 +40,9 @@ export function hosyuIntervalTimeMinute(
   return 6
 }
 
-export function* increment(
-  chars: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-) {
-  const nexts = [0]
+const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+export function* increment(start: string = "a") {
+  const nexts = start.split("").map(v => chars.indexOf(v))
   while (true) {
     const r = _.reverse(nexts.map(i => chars[i])).join("")
     const noUp = nexts.find((v, i) => {

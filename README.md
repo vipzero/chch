@@ -32,6 +32,8 @@ posted: Sat May 11 2019 15:06:53 GMT+0900 (GMT+09:00) next: 15min
 
 ### dump
 
+スレッド情報とレス一覧の取得
+
 ```
 $ chch dump https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/
 ```
@@ -66,4 +68,27 @@ $ chch dump https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ |jq '.posts[
 517
 787
 ...
+```
+
+### trip-dig
+
+トリップの採掘
+
+```
+chch trip-dig [prefix] [regex] [start | "a"] [interval | 100]
+```
+
+- regex: ログする文字列。正規表現。
+- start: suffix の初期値。途中で停止して再開するときなどに指定する。使える文字列は a-zA-Z。(default: "a")
+- interval: sleep する間隔。大きいほど CPU 使う。(default: 100)
+
+```
+# 正規表現
+chch trip-dig p____ "[0-9]+vip(vi)+$"
+
+# ゆっくり
+chch trip-dig p____ "^vip" aaaaaaa 10
+
+# ガンガン採掘
+chch trip-dig p____ "^vip" aaaaaaa 10000
 ```

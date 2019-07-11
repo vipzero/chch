@@ -10,13 +10,15 @@ const cli = meow(
 	Usage
 	  $ chch hosyu [thread URL]
 	  $ chch dump [thread URL]
+	  $ chch trip-dig [prefix] [regex] [start] [interval]
 
 	Options
 	  --text, -t message text default "ほ"
 
 	Examples
 	  $ chch hosyu http://hebi.5ch.net/test/read.cgi/news4vip/1556625403 --text "保守"
-	  > posted
+    > posted
+
 	  $ chch dump https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/
     > {
     >   "title": "プログラム「a=a+b」←こいつｗｗｗｗｗｗ",
@@ -33,6 +35,12 @@ const cli = meow(
     >     },
     >     {
     >       "number": "2",
+
+    $ chch trip-dig p____ "^vip" aaaaaaa
+    > #p____aaabvsZ
+    > ◆vipGBMso1mJ.
+    > #p____aaabyzP
+    > ◆vipV0VjY.j7I
 `,
   {
     flags: {
@@ -52,5 +60,5 @@ switch (cli.input[0]) {
       console.log(JSON.stringify(ress, null, "\t"))
     })
   case "trip-dig":
-    tripDig(cli.input[1], cli.input[2])
+    tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
 }

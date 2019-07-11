@@ -13,9 +13,16 @@ function regexPatch(str: string): string {
   return "◆" + _.tail(str).join("")
 }
 
-async function tripDig(prefix: string, search: string) {
-  const i = increment()
+async function tripDig(
+  prefix: string,
+  search: string,
+  _start: string | undefined,
+  _interval: string | undefined
+) {
+  const start = _start || "a"
+  const i = increment(start)
   const r = new RegExp(regexPatch(search))
+  const interval = _interval ? Number(_interval) : 100
   let n = 0
   while (true) {
     n++
@@ -25,8 +32,8 @@ async function tripDig(prefix: string, search: string) {
       console.log(str)
       console.log(trip)
     }
-    if (n % 100 === 0) {
-      await sleep(0.1)
+    if (n % interval === 0) {
+      await sleep(1)
     }
     if (n % 10000000 === 0) {
       console.log(n)
