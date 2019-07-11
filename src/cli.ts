@@ -3,6 +3,7 @@
 import meow from "meow"
 import hosyu from "./hosyu"
 import { getThread } from "./dump"
+import tripDig from "./trip-dig"
 
 const cli = meow(
   `
@@ -50,4 +51,6 @@ switch (cli.input[0]) {
     getThread(cli.input[1]).then(ress => {
       console.log(JSON.stringify(ress, null, "\t"))
     })
+  case "trip-dig":
+    tripDig(cli.input[1], cli.input[2])
 }
