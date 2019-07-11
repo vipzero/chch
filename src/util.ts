@@ -1,3 +1,5 @@
+import _ from "lodash"
+
 export function hosyuIntervalTimeMinute(
   hour: number,
   holiday: boolean = false
@@ -36,4 +38,26 @@ export function hosyuIntervalTimeMinute(
     return 15
   }
   return 6
+}
+
+export function* increment(
+  chars: string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+) {
+  const nexts = [0]
+  while (true) {
+    const r = _.reverse(nexts.map(i => chars[i])).join("")
+    const noUp = nexts.find((v, i) => {
+      const nv = v + 1
+      if (nv >= chars.length) {
+        nexts[i] = 0
+        return false
+      }
+      nexts[i] = nv
+      return true
+    })
+    if (noUp === undefined) {
+      nexts.push(0)
+    }
+    yield r
+  }
 }
