@@ -20,6 +20,7 @@ async function tripDig(
   _interval: string | undefined
 ) {
   const start = _start || "a"
+  const startTime = +Date.now()
   const i = increment(start)
   const r = new RegExp(regexPatch(search))
   const interval = _interval ? Number(_interval) : 100
@@ -36,9 +37,7 @@ async function tripDig(
       await sleep(1)
     }
     if (n % 10000000 === 0) {
-      console.log(n)
-      console.log(str)
-      console.log()
+      console.log(`--- ${n} ${str} ${Date.now() - startTime}ms`)
     }
   }
 }
