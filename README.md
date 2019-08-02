@@ -92,3 +92,16 @@ chch trip-dig p____ "^vip" aaaaaaa 10
 # ガンガン採掘
 chch trip-dig p____ "^vip" aaaaaaa 10000
 ```
+
+### watch
+
+スレの監視と新着ポストの標準出力
+
+```
+chch watch [url] [command]
+```
+
+```
+# Mac で喋らせる
+chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ "say -v Kyoko"
+```

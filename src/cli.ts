@@ -43,6 +43,8 @@ const cli = meow(
     > ◆vipGBMso1mJ.
     > #p____aaabyzP
     > ◆vipV0VjY.j7I
+
+	  $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ "say -v Kyoko"
 `,
   {
     flags: {
