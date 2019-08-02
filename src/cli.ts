@@ -59,12 +59,16 @@ const cli = meow(
 switch (cli.input[0]) {
   case "hosyu":
     hosyu(cli.input[1], cli.flags.text || "ほ")
+    break
   case "dump":
     getThread(cli.input[1]).then(ress => {
       console.log(JSON.stringify(ress, null, "\t"))
     })
+    break
   case "trip-dig":
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
+    break
   case "watch":
     watch(cli.input[1], cli.input[2])
+    break
 }
