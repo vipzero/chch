@@ -64,5 +64,5 @@ switch (cli.input[0]) {
   case "trip-dig":
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
   case "watch":
-    watch(cli.input[1])
+    watch(cli.input[1], cli.input[2])
 }
