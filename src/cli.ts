@@ -4,12 +4,14 @@ import meow from "meow"
 import hosyu from "./hosyu"
 import { getThread } from "./dump"
 import tripDig from "./trip-dig"
+import watch from "./watch"
 
 const cli = meow(
   `
 	Usage
 	  $ chch hosyu [thread URL]
 	  $ chch dump [thread URL]
+	  $ chch watch [thread URL]
 	  $ chch trip-dig [prefix] [regex] [start] [interval]
 
 	Options
@@ -61,4 +63,6 @@ switch (cli.input[0]) {
     })
   case "trip-dig":
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
+  case "watch":
+    watch(cli.input[1])
 }
