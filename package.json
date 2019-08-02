@@ -14,7 +14,7 @@
     "lodash": "^4.17.14",
     "meow": "^5.0.0",
     "public-ip": "^3.1.0",
-    "puppeteer": "^1.18.1"
+    "puppeteer": "^1.19.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.136",
