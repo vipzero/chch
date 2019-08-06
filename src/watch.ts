@@ -1,10 +1,12 @@
-import { getThread } from "./dump"
+import { getThread, Post } from "./dump"
 import _ from "lodash"
 import chalk from "chalk"
-import { spawnSync } from "child_process"
 import publicIp from "public-ip"
 
-async function watch(threadURL: string, pipe?: string) {
+import OpenJTalk from "openjtalk"
+const mei = new OpenJTalk()
+
+async function watch(threadURL: string, say?: boolean) {
   const readed: Record<number, boolean> = {}
   const thread = await getThread(threadURL)
   thread.posts.forEach(v => {
@@ -13,16 +15,15 @@ async function watch(threadURL: string, pipe?: string) {
   const startIp = await publicIp.v4()
   console.log(chalk.gray("startIp: " + startIp))
   const post = _.last(thread.posts)
-  const log = (text: string) => {
-    console.log(text)
-    if (!pipe) {
+  const log = (post: Post) => {
+    console.log(post.message)
+    if (!say) {
       return
     }
-    const [command, ...cargs] = pipe.split(" ")
-    spawnSync(command, [...cargs, text])
+    mei.talk(post.message)
   }
   if (post) {
-    log(post.message)
+    log(post)
   }
   let taskId: null | NodeJS.Timeout = null
   async function task() {
@@ -40,7 +41,7 @@ async function watch(threadURL: string, pipe?: string) {
       .filter(v => !readed[v.number])
       .forEach(post => {
         readed[post.number] = true
-        log(post.message)
+        log(post)
       })
   }
   taskId = setInterval(task, 1000 * 60)

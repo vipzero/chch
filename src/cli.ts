@@ -15,7 +15,8 @@ const cli = meow(
 	  $ chch trip-dig [prefix] [regex] [start] [interval]
 
 	Options
-	  --text, -t message text default "ほ"
+	  --text, -t message text default "ほ" in hosyu
+	  --say, -s voice speak in watch
 
 	Examples
 	  $ chch hosyu http://hebi.5ch.net/test/read.cgi/news4vip/1556625403 --text "保守"
@@ -44,13 +45,17 @@ const cli = meow(
     > #p____aaabyzP
     > ◆vipV0VjY.j7I
 
-	  $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ "say -v Kyoko"
+	  $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ --say
 `,
   {
     flags: {
       text: {
         type: "string",
         alias: "t",
+      },
+      say: {
+        type: "boolean",
+        alias: "s",
       },
     },
   }
@@ -69,6 +74,6 @@ switch (cli.input[0]) {
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
     break
   case "watch":
-    watch(cli.input[1], cli.input[2])
+    watch(cli.input[1], cli.flags.say)
     break
 }

@@ -41,7 +41,7 @@ export async function getThreads() {
   return threads
 }
 
-type Post = {
+export type Post = {
   number: number
   name: string
   userId: string
@@ -50,7 +50,7 @@ type Post = {
   message: string
 }
 
-type Thread = {
+export type Thread = {
   title: string
   url: string
   postCount: number

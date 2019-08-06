@@ -1726,6 +1726,13 @@ opencollective-postinstall@^2.0.2:
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
   integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
 
+openjtalk@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/openjtalk/-/openjtalk-0.1.6.tgz#f6c9955354bb4ebabfe87a82cdc4182acbdd8900"
+  integrity sha1-9smVU1S7Trq/6HqCzcQYKsvdiQA=
+  dependencies:
+    uuid-v4 "*"
+
 optionator@^0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.8.2.tgz#364c5e409d3f4d6301d6c0b4c05bba50180aeb64"
@@ -2465,6 +2472,11 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
+
+uuid-v4@*:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/uuid-v4/-/uuid-v4-0.1.0.tgz#62d7b310406f6cecfea1528c69f1e8e0bcec5a3a"
+  integrity sha1-YtezEEBvbOz+oVKMafHo4LzsWjo=
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
