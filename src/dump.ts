@@ -72,7 +72,10 @@ export async function getThread(url: string): Promise<Thread> {
     const div = $(elA)
     const number = div.find(".number").text()
     const name = div.find(".name").text()
-    const userId = div.find(".userid").text()
+    const userId = div
+      .find(".uid")
+      .text()
+      .split(":")[1]
     const dateStr = div.find(".date").text()
     const timestamp = +dayjs(dateStr)
     const comma = Number(dateStr.split(".")[1])
