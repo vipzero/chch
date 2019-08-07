@@ -5,18 +5,20 @@ import publicIp from "public-ip"
 
 import OpenJTalk from "openjtalk"
 import { promisify } from "util"
+import { execSync } from "child_process"
+
 const mei = new OpenJTalk()
 const talk = promisify(mei.talk).bind(mei)
 
-const sayTextBatch = text =>
+const sayTextBatch = (text: string): string =>
   text
     .replace(/[wWｗＷ]{2}/g, "わらわら")
     .replace(/[wWｗｗ]([^a-zA-Z])/g, "わら$1")
-    .replace(/っ+)/g, "っ")
-    .replace(/ッ+)/g, "ッ")
+    .replace(/っ{2}/g, "っ")
+    .replace(/ッ{2}/g, "ッ")
     .substr(0, 100)
 
-async function watch(threadURL: string, say?: boolean) {
+async function watch(threadURL: string, say: boolean, command?: string) {
   const readed: Record<number, boolean> = {}
   const thread = await getThread(threadURL)
   thread.posts.forEach(v => {
@@ -27,10 +29,12 @@ async function watch(threadURL: string, say?: boolean) {
   const post = _.last(thread.posts)
   const log = async (post: Post) => {
     console.log(`${post.userId.substr(0, 3)} ${post.message}`)
-    if (!say) {
-      return
+    if (say) {
+      await talk(sayTextBatch(post.message))
     }
-    await talk(sayTextBatch(post.message))
+    if (command) {
+      execSync(command)
+    }
   }
   if (post) {
     log(post)

@@ -11,7 +11,8 @@ const cli = meow(
 	Usage
 	  $ chch hosyu [thread URL]
 	  $ chch dump [thread URL]
-	  $ chch watch [thread URL]
+	  $ chch watch [thread URL] [command]
+	  $ chch yomiage [thread URL]
 	  $ chch trip-dig [prefix] [regex] [start] [interval]
 
 	Options
@@ -45,7 +46,9 @@ const cli = meow(
     > #p____aaabyzP
     > ◆vipV0VjY.j7I
 
-	  $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ --say
+    $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ --command "say got"
+
+	  $ chch yomiage https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/
 `,
   {
     flags: {
@@ -53,9 +56,9 @@ const cli = meow(
         type: "string",
         alias: "t",
       },
-      say: {
-        type: "boolean",
-        alias: "s",
+      command: {
+        type: "string",
+        alias: "c",
       },
     },
   }
@@ -74,6 +77,9 @@ switch (cli.input[0]) {
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
     break
   case "watch":
-    watch(cli.input[1], cli.flags.say)
+    watch(cli.input[1], false, cli.flags.command)
+    break
+  case "yomiage":
+    watch(cli.input[1], true)
     break
 }
