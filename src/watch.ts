@@ -8,6 +8,14 @@ import { promisify } from "util"
 const mei = new OpenJTalk()
 const talk = promisify(mei.talk).bind(mei)
 
+const sayTextBatch = text =>
+  text
+    .replace(/[wWｗＷ]{2}/g, "わらわら")
+    .replace(/[wWｗｗ]([^a-zA-Z])/g, "わら$1")
+    .replace(/っ+)/g, "っ")
+    .replace(/ッ+)/g, "ッ")
+    .substr(0, 100)
+
 async function watch(threadURL: string, say?: boolean) {
   const readed: Record<number, boolean> = {}
   const thread = await getThread(threadURL)
@@ -22,7 +30,7 @@ async function watch(threadURL: string, say?: boolean) {
     if (!say) {
       return
     }
-    await talk(post.message)
+    await talk(sayTextBatch(post.message))
   }
   if (post) {
     log(post)
