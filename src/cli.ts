@@ -2,7 +2,7 @@
 
 import meow from "meow"
 import hosyu from "./hosyu"
-import { getThread } from "./dump"
+import { getThread, getThreads } from "./dump"
 import tripDig from "./trip-dig"
 import watch from "./watch"
 
@@ -71,6 +71,11 @@ switch (cli.input[0]) {
   case "dump":
     getThread(cli.input[1]).then(ress => {
       console.log(JSON.stringify(ress, null, "\t"))
+    })
+    break
+  case "dump-threads":
+    getThreads().then(res => {
+      console.log(JSON.stringify(res, null, "\t"))
     })
     break
   case "trip-dig":

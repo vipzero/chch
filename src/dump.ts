@@ -38,7 +38,7 @@ export async function getThreads() {
     const url = makeThreadUrl(id)
     threads.push({ id, title, url, count })
   })
-  return threads
+  return { threads }
 }
 
 export type Post = {
