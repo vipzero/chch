@@ -70,6 +70,19 @@ $ chch dump https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ |jq '.posts[
 ...
 ```
 
+### dump-threads
+
+スレッド一覧の dump
+
+```
+chch dump-threads
+```
+
+```
+# スレタイ検索
+chch dump-threads |jq -r '.threads[] | "\(.title)\t\(.url)"' |peco
+```
+
 ### trip-dig
 
 トリップの採掘
