@@ -16,7 +16,7 @@ const sayTextBatch = (text: string): string =>
     .replace(/[wWｗｗ]([^a-zA-Z])/g, "わら$1")
     .replace(/っ{2}/g, "っ")
     .replace(/ッ{2}/g, "ッ")
-    .substr(0, 100)
+    .substr(0, 40)
 
 async function watch(threadURL: string, say: boolean, command?: string) {
   const readed: Record<number, boolean> = {}
