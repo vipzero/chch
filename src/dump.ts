@@ -2,6 +2,7 @@ import cheerio from "cheerio"
 import { Iconv } from "iconv"
 import axios from "axios"
 import dayjs from "dayjs"
+import _ from "lodash"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -58,19 +59,54 @@ export type Thread = {
   posts: Post[]
 }
 
-export async function getThread(url: string): Promise<Thread> {
+const elem = (item: any): item is HTMLElement => !!item.innerText
+
+export async function getThreadPart4Vip(url: string): Promise<Thread> {
+  const $ = cheerio.load((await axios.get(url)).data)
+
+  const title = $("h1")
+    .text()
+    .trim()
+  const size = $("font > b").text()
+
+  const posts: Post[] = []
+  // console.log(_.zip($("dl > dt"), $("dl > dd")))
+  _.zip($("dl > dt"), $("dl > dd")).map(([dt, dd], i) => {
+    if (!dd || !dt) {
+      return
+    }
+    // console.log(dd)
+    const $dt = $(dt)
+    const $dd = $(dd)
+    const number = i + 1
+    const name = $dt.find(".name").text()
+    const infoText = $dt.find(".info").text()
+    const m = infoText.match(/：(.*) ID:(.*)/)
+    const [_m = "", dateStr = "", userId = ""] = m || []
+    const timestamp = +dayjs(dateStr)
+    const comma = Number(dateStr.split(".")[1])
+    const message = $dd.text().trim()
+    posts.push({ number, name, userId, timestamp, comma, message })
+  })
+  const postCount = posts.length
+  return { title, url, postCount, size, posts }
+}
+
+export async function getThreadVip(url: string): Promise<Thread> {
   const $ = cheerio.load((await axios.get(url)).data)
 
   const title = $(".title")
     .text()
     .trim()
-  const postCount = parseInt($(".pagestats .menujust .metastats")[0].innerText)
-  const size = $(".pagestats .menujust .metastats")[1].innerText
+  const m = $(".metastats.meta.centered")
+    .text()
+    .match(/\d+KB/)
+  const size = m ? m[0] : ""
 
   const posts: Post[] = []
   $(".post").map((i, elA) => {
     const div = $(elA)
-    const number = div.find(".number").text()
+    const number = Number(div.find(".number").text())
     const name = div.find(".name").text()
     const userId = div
       .find(".uid")
@@ -83,20 +119,16 @@ export async function getThread(url: string): Promise<Thread> {
       .find(".message")
       .text()
       .trim()
-    posts.push({
-      number,
-      name,
-      userId,
-      timestamp,
-      comma,
-      message,
-    })
+    posts.push({ number, name, userId, timestamp, comma, message })
   })
-  return {
-    title,
-    url,
-    postCount,
-    size,
-    posts,
+  const postCount = posts.length
+  return { title, url, postCount, size, posts }
+}
+
+export function getThread(url: string) {
+  if (url.match(/vip2ch\.com/)) {
+    return getThreadPart4Vip(url)
+  } else {
+    return getThreadVip(url)
   }
 }
