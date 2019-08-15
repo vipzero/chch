@@ -58,6 +58,7 @@ async function watch(threadURL: string, say: boolean, command?: string) {
     }
   }
   taskId = setInterval(task, 1000 * 60)
+  return taskId
 }
 
 export default watch
