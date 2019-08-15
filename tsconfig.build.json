@@ -9,5 +9,5 @@
     "declaration": true,
     "outDir": "dist"
   },
-  "files": ["src/cli.ts"]
+  "files": ["src/cli.ts", "src/index.ts"]
 }
