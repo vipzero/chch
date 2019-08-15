@@ -1308,7 +1308,7 @@ is-glob@^4.0.1:
   dependencies:
     is-extglob "^2.1.1"
 
-is-ip@^3.0.0:
+is-ip@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/is-ip/-/is-ip-3.1.0.tgz#2ae5ddfafaf05cb8008a62093cf29734f657c5d8"
   integrity sha512-35vd5necO7IitFPjd/YBeqwWnyDWbuLH9ZXQdMfDA8TEo7pv5X8yfrvVO3xbJbLUlERCMvf6X0hTUamQxCYJ9Q==
@@ -2012,14 +2012,14 @@ proxy-from-env@^1.0.0:
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.0.0.tgz#33c50398f70ea7eb96d21f7b817630a55791c7ee"
   integrity sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=
 
-public-ip@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/public-ip/-/public-ip-3.1.0.tgz#41c7e336b6879d6092696e6c5beb69eb2e96ed0e"
-  integrity sha512-d7JsmLV7nbwUYqdYWD331eMql6R3xuFozJjLDwq6pzpYCdktCbikVqyfDeyOnG5sfVqgJlWUFELf3MwS322mxQ==
+public-ip@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/public-ip/-/public-ip-3.2.0.tgz#a246cc6e0ba761285b48598f087d8755a82b12ed"
+  integrity sha512-DBq4o955zhrhESG4z6GkLN9mtY9NT/JOjEV8pvnYy3bjVQOQF0J5lJNwWLbEWwNstyNFJlY7JxCPFq4bdXSabw==
   dependencies:
     dns-socket "^4.2.0"
     got "^9.6.0"
-    is-ip "^3.0.0"
+    is-ip "^3.1.0"
 
 pump@^3.0.0:
   version "3.0.0"
