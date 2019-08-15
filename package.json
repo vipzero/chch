@@ -41,6 +41,7 @@
   "files": [
     "dist"
   ],
+  "main": "dist/index.js",
   "license": "MIT",
   "bin": "dist/cli.js",
   "scripts": {
