@@ -2,9 +2,11 @@
 
 import meow from "meow"
 import hosyu from "./hosyu"
-import { getThread, getThreads } from "./dump"
+import { getThread, getThreads, Post } from "./dump"
 import tripDig from "./trip-dig"
 import watch from "./watch"
+import chalk from "chalk"
+import { execSync } from "child_process"
 
 const cli = meow(
   `
@@ -82,6 +84,16 @@ const cli = meow(
   }
 )
 
+const gotPostCallback = (post: Post) => {
+  if (cli.flags.command) {
+    execSync(cli.flags.command)
+  }
+  console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
+}
+const crawledCallback = (newPostCount: number) => {
+  console.log(chalk.gray(`crawl thread: got ${newPostCount}`))
+}
+
 switch (cli.input[0]) {
   case "hosyu":
     hosyu(cli.input[1], cli.flags.text || "ほ")
@@ -100,9 +112,9 @@ switch (cli.input[0]) {
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
     break
   case "watch":
-    watch(cli.input[1], false, cli.flags.command)
+    watch(cli.input[1], false, gotPostCallback, crawledCallback)
     break
   case "yomiage":
-    watch(cli.input[1], true)
+    watch(cli.input[1], true, gotPostCallback, crawledCallback)
     break
 }
