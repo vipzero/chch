@@ -19,7 +19,12 @@ const sayTextBatch = (text: string): string =>
     .replace(/`/g, "")
     .substr(0, 40)
 
-async function watch(threadURL: string, say: boolean, command?: string) {
+async function watch(
+  threadURL: string,
+  say: boolean,
+  command?: string,
+  callback?: (post: Post) => void
+) {
   const readed: Record<number, boolean> = {}
   const thread = await getThread(threadURL)
   thread.posts.forEach(v => {
@@ -35,6 +40,9 @@ async function watch(threadURL: string, say: boolean, command?: string) {
     }
     if (command) {
       execSync(command)
+    }
+    if (callback) {
+      callback(post)
     }
   }
   if (post) {
