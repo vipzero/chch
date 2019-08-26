@@ -10,7 +10,7 @@
     "dayjs": "^1.8.15",
     "holiday-jp": "^1.0.0",
     "iconv": "^2.3.4",
-    "lint-staged": "^9.2.1",
+    "lint-staged": "^9.2.4",
     "lodash": "^4.17.15",
     "meow": "^5.0.0",
     "openjtalk": "^0.1.6",
