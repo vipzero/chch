@@ -21,7 +21,7 @@
     "@types/cheerio": "^0.22.13",
     "@types/lodash": "^4.14.136",
     "@types/node": "^12.6.9",
-    "@types/puppeteer": "^1.19.0",
+    "@types/puppeteer": "^1.19.1",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.1.0",
