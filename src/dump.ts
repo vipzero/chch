@@ -3,6 +3,7 @@ import { Iconv } from "iconv"
 import axios from "axios"
 import dayjs from "dayjs"
 import _ from "lodash"
+import { Post, Thread } from "./types"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -27,7 +28,7 @@ function titleParse(text: string): { title: string; count: number } | null {
 type ThreadMin = { id: string; title: string; url: string; count: number }
 
 export async function getThreads() {
-  const res = await axios.get(listPageUrl)
+  const res = await client.get(listPageUrl)
   const $ = cheerio.load(res.data)
   const threads: ThreadMin[] = []
   $("#trad > a").map((i, elA) => {
@@ -45,27 +46,8 @@ export async function getThreads() {
   return { threads }
 }
 
-export type Post = {
-  number: number
-  name: string
-  userId: string
-  timestamp: number
-  comma: number
-  message: string
-}
-
-export type Thread = {
-  title: string
-  url: string
-  postCount: number
-  size: string
-  posts: Post[]
-}
-
-const elem = (item: any): item is HTMLElement => !!item.innerText
-
 export async function getThreadPart4Vip(url: string): Promise<Thread> {
-  const $ = cheerio.load((await axios.get(url)).data)
+  const $ = cheerio.load((await client.get(url)).data)
 
   const title = $("h1")
     .text()
@@ -96,7 +78,7 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
 }
 
 export async function getThreadVip(url: string): Promise<Thread> {
-  const $ = cheerio.load((await axios.get(url)).data)
+  const $ = cheerio.load((await client.get(url)).data)
 
   const title = $(".title")
     .text()
@@ -136,7 +118,7 @@ export function getThread(url: string) {
   }
 }
 
-function generateForm(data: Record<string, any>): URLSearchParams {
+function generateForm(data: Record<string, string>): URLSearchParams {
   const params = new URLSearchParams()
   _.each(data, (value, key) => {
     params.append(key, value)
@@ -144,16 +126,18 @@ function generateForm(data: Record<string, any>): URLSearchParams {
   return params
 }
 
-export async function postMessage(url, message) {
-  const [server] = new URL(url).hostname.split(".")
+const parseSetCookies = (headers: Record<string, any>): string[] => {
+  return _.get(headers, ["set-cookie"], []).map(v => v.split(";")[0])
+}
 
-  const paths = url.split("/")
-  const [_ex, thread, board] = [paths.pop(), paths.pop(), paths.pop()]
-  // return
-  const bbsUrl = `https://${server}.5ch.net/test/bbs.cgi` // 投稿先CGI
+export async function postMessage(url, message) {
+  const { origin, pathname } = new URL(url)
+  const paths = _.compact(pathname.split("/"))
+  const [thread, bbs] = _.reverse(paths)
+  const bbsUrl = `${origin}/test/bbs.cgi`
   const res0 = await client.get(url)
   const cookies = [
-    _.get(res0.headers, ["set-cookie", 0]).split(" ")[0],
+    ...parseSetCookies(res0.headers),
     'READJS="off"',
     "yuki=akari",
   ]
@@ -164,7 +148,7 @@ export async function postMessage(url, message) {
     "accept-language": "ja,en-US;q=0.9,en;q=0.8,es;q=0.7",
     "cache-control": "max-age=0",
     "content-type": "application/x-www-form-urlencoded",
-    origin: "https://hebi.5ch.net",
+    origin,
     referer: url,
     "sec-fetch-mode": "navigate",
     "sec-fetch-site": "same-origin",
@@ -175,12 +159,12 @@ export async function postMessage(url, message) {
     cookie: cookies.join("; "),
   }
 
-  const time = Math.floor(Date.now() / 1000) - 10
+  const time = `${Math.floor(Date.now() / 1000) - 10}`
   const makeForm = {
     FROM: "",
     mail: "",
     MESSAGE: message,
-    bbs: board,
+    bbs,
     key: thread,
     time,
     submit: "書き込む",
@@ -188,13 +172,11 @@ export async function postMessage(url, message) {
     oekaki_thread1: "",
   }
   const form = generateForm(makeForm)
-
   const post = headers => client.post<string | null>(bbsUrl, form, { headers })
   const res = await post(headers)
 
-  // console.log(res.request)
   if (res.data && res.data.indexOf("書き込み確認") !== -1) {
-    cookies.push(_.get(res.headers, ["set-cookie", 0]))
+    parseSetCookies(res.headers).forEach(s => cookies.push(s))
     headers.cookie = cookies.join("; ")
     await post(headers)
   }

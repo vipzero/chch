@@ -1,12 +1,12 @@
-import { getThread, Post } from "./dump"
+import { getThread } from "./dump"
 import _ from "lodash"
 import publicIp from "public-ip"
 
 import OpenJTalk from "openjtalk"
 import { promisify } from "util"
-import { request } from "http"
 import axios from "axios"
 import fs from "fs"
+import { Post } from "./types"
 
 const mei = new OpenJTalk()
 const talk = promisify(mei.talk).bind(mei)
