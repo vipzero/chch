@@ -15,7 +15,6 @@ const cli = meow(
     $ chch hosyu [thread URL]
     $ chch dump [thread URL]
     $ chch watch [thread URL] [command]
-    $ chch yomiage [thread URL]
     $ chch trip-dig [prefix] [regex] [start] [interval]
     $ chch post [thread URL] [message]
 
@@ -68,8 +67,6 @@ const cli = meow(
     > ◆vipV0VjY.j7I
 
     $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ --command "say got"
-
-    $ chch yomiage https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/
     
 `,
   {
@@ -86,11 +83,13 @@ const cli = meow(
   }
 )
 
-const gotPostCallback = (post: Post) => {
-  if (cli.flags.command) {
-    execSync(cli.flags.command)
-  }
-  console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
+const gotPostsCallback = (posts: Post[]) => {
+  posts.forEach(post => {
+    if (cli.flags.command) {
+      execSync(cli.flags.command)
+    }
+    console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
+  })
 }
 const crawledCallback = (newPostCount: number) => {
   console.log(chalk.gray(`crawl thread: got ${newPostCount}`))
@@ -114,10 +113,7 @@ switch (cli.input[0]) {
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
     break
   case "watch":
-    watch(cli.input[1], false, gotPostCallback, crawledCallback)
-    break
-  case "yomiage":
-    watch(cli.input[1], true, gotPostCallback, crawledCallback)
+    watch(cli.input[1], gotPostsCallback, crawledCallback)
     break
   case "post":
     postMessage(cli.input[1], cli.input[2])
