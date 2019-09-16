@@ -3,15 +3,19 @@ import { Iconv } from "iconv"
 import axios from "axios"
 import dayjs from "dayjs"
 import _ from "lodash"
+import { Post, Thread } from "./types"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
 
 const sjis2utf8 = new Iconv("SHIFT_JIS", "UTF-8//TRANSLIT//IGNORE")
+// const utf82sjis = new Iconv("UTF-8//TRANSLIT//IGNORE", "SHIFT_JIS")
 
 axios.defaults.responseType = "arraybuffer"
 axios.defaults.transformResponse = [data => sjis2utf8.convert(data).toString()]
+
+const client = axios.create({ withCredentials: true })
 
 function titleParse(text: string): { title: string; count: number } | null {
   const m = text.match(/^\d+: ([\s\S]*?) \((\d+)\)$/)
@@ -24,7 +28,7 @@ function titleParse(text: string): { title: string; count: number } | null {
 type ThreadMin = { id: string; title: string; url: string; count: number }
 
 export async function getThreads() {
-  const res = await axios.get(listPageUrl)
+  const res = await client.get(listPageUrl)
   const $ = cheerio.load(res.data)
   const threads: ThreadMin[] = []
   $("#trad > a").map((i, elA) => {
@@ -42,27 +46,8 @@ export async function getThreads() {
   return { threads }
 }
 
-export type Post = {
-  number: number
-  name: string
-  userId: string
-  timestamp: number
-  comma: number
-  message: string
-}
-
-export type Thread = {
-  title: string
-  url: string
-  postCount: number
-  size: string
-  posts: Post[]
-}
-
-const elem = (item: any): item is HTMLElement => !!item.innerText
-
 export async function getThreadPart4Vip(url: string): Promise<Thread> {
-  const $ = cheerio.load((await axios.get(url)).data)
+  const $ = cheerio.load((await client.get(url)).data)
 
   const title = $("h1")
     .text()
@@ -93,7 +78,7 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
 }
 
 export async function getThreadVip(url: string): Promise<Thread> {
-  const $ = cheerio.load((await axios.get(url)).data)
+  const $ = cheerio.load((await client.get(url)).data)
 
   const title = $(".title")
     .text()
@@ -130,5 +115,69 @@ export function getThread(url: string) {
     return getThreadPart4Vip(url)
   } else {
     return getThreadVip(url)
+  }
+}
+
+function generateForm(data: Record<string, string>): URLSearchParams {
+  const params = new URLSearchParams()
+  _.each(data, (value, key) => {
+    params.append(key, value)
+  })
+  return params
+}
+
+const parseSetCookies = (headers: Record<string, any>): string[] => {
+  return _.get(headers, ["set-cookie"], []).map(v => v.split(";")[0])
+}
+
+export async function postMessage(url, message) {
+  const { origin, pathname } = new URL(url)
+  const paths = _.compact(pathname.split("/"))
+  const [thread, bbs] = _.reverse(paths)
+  const bbsUrl = `${origin}/test/bbs.cgi`
+  const res0 = await client.get(url)
+  const cookies = [
+    ...parseSetCookies(res0.headers),
+    'READJS="off"',
+    "yuki=akari",
+  ]
+  const headers = {
+    accept:
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "ja,en-US;q=0.9,en;q=0.8,es;q=0.7",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    origin,
+    referer: url,
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "User-Agent":
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
+    cookie: cookies.join("; "),
+  }
+
+  const time = `${Math.floor(Date.now() / 1000) - 10}`
+  const makeForm = {
+    FROM: "",
+    mail: "",
+    MESSAGE: message,
+    bbs,
+    key: thread,
+    time,
+    submit: "書き込む",
+    // eslint-disable-next-line
+    oekaki_thread1: "",
+  }
+  const form = generateForm(makeForm)
+  const post = headers => client.post<string | null>(bbsUrl, form, { headers })
+  const res = await post(headers)
+
+  if (res.data && res.data.indexOf("書き込み確認") !== -1) {
+    parseSetCookies(res.headers).forEach(s => cookies.push(s))
+    headers.cookie = cookies.join("; ")
+    await post(headers)
   }
 }

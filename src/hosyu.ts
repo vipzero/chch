@@ -1,4 +1,3 @@
-import puppeteer from "puppeteer"
 import holiday from "holiday-jp"
 import { hosyuIntervalTimeMinute } from "./util"
 
@@ -29,29 +28,8 @@ function nextIntervalMinute(date: Date): number {
   return hosyuIntervalTimeMinute(date.getHours(), isHoliday(date))
 }
 
-let page: puppeteer.Page | undefined = undefined
-
 async function main(threadURL: string, text: string) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  })
-  if (!page) {
-    page = await browser.newPage()
-  }
-  await page.goto(threadURL)
-  await page.type("form textarea", text)
-  await page.click("form [type=submit]")
-  page
-    .waitForSelector("input[value=上記全てを承諾して書き込む]", {
-      timeout: 10000,
-    })
-    .then(() => {
-      if (page) {
-        page.click("input[type=submit]")
-      }
-    })
-    .catch(() => {})
+  postMessage(threadURL, text)
 
   const now = new Date()
   const next = nextIntervalMinute(now)
