@@ -11,7 +11,7 @@ import fs from "fs"
 const mei = new OpenJTalk()
 const talk = promisify(mei.talk).bind(mei)
 
-const downloadImage = (url, image_path) =>
+const downloadImage = (url, imgPath) =>
   axios({
     url,
     responseType: "stream",
@@ -19,7 +19,7 @@ const downloadImage = (url, image_path) =>
     response =>
       new Promise((resolve, reject) => {
         response.data
-          .pipe(fs.createWriteStream(image_path))
+          .pipe(fs.createWriteStream(imgPath))
           .on("finish", () => resolve())
           .on("error", e => reject(e))
       })

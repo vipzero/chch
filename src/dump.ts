@@ -9,9 +9,12 @@ const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
 
 const sjis2utf8 = new Iconv("SHIFT_JIS", "UTF-8//TRANSLIT//IGNORE")
+// const utf82sjis = new Iconv("UTF-8//TRANSLIT//IGNORE", "SHIFT_JIS")
 
 axios.defaults.responseType = "arraybuffer"
 axios.defaults.transformResponse = [data => sjis2utf8.convert(data).toString()]
+
+const client = axios.create({ withCredentials: true })
 
 function titleParse(text: string): { title: string; count: number } | null {
   const m = text.match(/^\d+: ([\s\S]*?) \((\d+)\)$/)
@@ -130,5 +133,69 @@ export function getThread(url: string) {
     return getThreadPart4Vip(url)
   } else {
     return getThreadVip(url)
+  }
+}
+
+function generateForm(data: Record<string, any>): URLSearchParams {
+  const params = new URLSearchParams()
+  _.each(data, (value, key) => {
+    params.append(key, value)
+  })
+  return params
+}
+
+export async function postMessage(url, message) {
+  const [server] = new URL(url).hostname.split(".")
+
+  const paths = url.split("/")
+  const [_ex, thread, board] = [paths.pop(), paths.pop(), paths.pop()]
+  // return
+  const bbsUrl = `https://${server}.5ch.net/test/bbs.cgi` // 投稿先CGI
+  const res0 = await client.get(url)
+  const cookies = [
+    _.get(res0.headers, ["set-cookie", 0]).split(" ")[0],
+    'READJS="off"',
+    "yuki=akari",
+  ]
+  const headers = {
+    accept:
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "ja,en-US;q=0.9,en;q=0.8,es;q=0.7",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    origin: "https://hebi.5ch.net",
+    referer: url,
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "User-Agent":
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
+    cookie: cookies.join("; "),
+  }
+
+  const time = Math.floor(Date.now() / 1000) - 10
+  const makeForm = {
+    FROM: "",
+    mail: "",
+    MESSAGE: message,
+    bbs: board,
+    key: thread,
+    time,
+    submit: "書き込む",
+    // eslint-disable-next-line
+    oekaki_thread1: "",
+  }
+  const form = generateForm(makeForm)
+
+  const post = headers => client.post<string | null>(bbsUrl, form, { headers })
+  const res = await post(headers)
+
+  // console.log(res.request)
+  if (res.data && res.data.indexOf("書き込み確認") !== -1) {
+    cookies.push(_.get(res.headers, ["set-cookie", 0]))
+    headers.cookie = cookies.join("; ")
+    await post(headers)
   }
 }

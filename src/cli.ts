@@ -2,7 +2,7 @@
 
 import meow from "meow"
 import hosyu from "./hosyu"
-import { getThread, getThreads, Post } from "./dump"
+import { getThread, getThreads, Post, postMessage } from "./dump"
 import tripDig from "./trip-dig"
 import watch from "./watch"
 import chalk from "chalk"
@@ -16,6 +16,7 @@ const cli = meow(
     $ chch watch [thread URL] [command]
     $ chch yomiage [thread URL]
     $ chch trip-dig [prefix] [regex] [start] [interval]
+    $ chch post [thread URL] [message]
 
   Options
     --text, -t message text default "ほ" in hosyu
@@ -116,5 +117,8 @@ switch (cli.input[0]) {
     break
   case "yomiage":
     watch(cli.input[1], true, gotPostCallback, crawledCallback)
+    break
+  case "post":
+    postMessage(cli.input[1], cli.input[2])
     break
 }
