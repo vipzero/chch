@@ -118,13 +118,3 @@ chch watch [url] [command]
 # 受取時に音を出す
 chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ "say got"
 ```
-
-### yomiage
-
-スレの監視と新着ポストの標準出力
-
-```
-chch yomiage [url]
-```
-
-音声読み上げする
