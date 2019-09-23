@@ -1,6 +1,6 @@
 {
   "name": "chch",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "vipzero",
   "dependencies": {
     "2ch-trip": "^1.0.1",
