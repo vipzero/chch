@@ -1,4 +1,6 @@
-> chch
+![](https://github.com/elzup/reactal/workflows/Node%20CI/badge.svg)
+
+# chch
 
 5ch 用スクリプト集だよ
 
