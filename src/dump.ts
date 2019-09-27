@@ -1,5 +1,5 @@
 import cheerio from "cheerio"
-import { Iconv } from "iconv"
+import iconv from "iconv-lite"
 import axios from "axios"
 import dayjs from "dayjs"
 import _ from "lodash"
@@ -9,11 +9,8 @@ const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
 
-const sjis2utf8 = new Iconv("SHIFT_JIS", "UTF-8//TRANSLIT//IGNORE")
-// const utf82sjis = new Iconv("UTF-8//TRANSLIT//IGNORE", "SHIFT_JIS")
-
 axios.defaults.responseType = "arraybuffer"
-axios.defaults.transformResponse = [data => sjis2utf8.convert(data).toString()]
+axios.defaults.transformResponse = [data => iconv.decode(data, "Shift_JIS")]
 
 const client = axios.create({ withCredentials: true })
 

@@ -1,16 +1,4 @@
-import fs from "fs"
-import axios from "axios"
-import MockAdapter from "axios-mock-adapter"
-
 import m from "../"
-
-// This sets the mock adapter on the default instance
-const mock = new MockAdapter(axios)
-
-mock.onAny().reply(200, () => {
-  const html = fs.readFileSync("./mock/thread.html")
-  return html
-})
 
 const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/"
 
