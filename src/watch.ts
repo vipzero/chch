@@ -1,5 +1,4 @@
 import { getThread } from "./dump"
-import _ from "lodash"
 
 import { Post } from "./types"
 

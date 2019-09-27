@@ -66,8 +66,9 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
     const number = i + 1
     const name = $dt.find(".name").text()
     const infoText = $dt.find(".info").text()
-    const m = infoText.match(/：(.*) ID:(.*)/)
-    const [_m = "", dateStr = "", userId = ""] = m || []
+    const m = infoText.match(/：(.*) ID:(.*)/) || []
+    const dateStr = m[1]
+    const userId = m[2]
     const timestamp = +dayjs(dateStr)
     const comma = Number(dateStr.split(".")[1])
     const message = $dd.text().trim()

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
+import { execSync } from "child_process"
 import meow from "meow"
+import chalk from "chalk"
 import hosyu from "./hosyu"
 import { getThread, getThreads, postMessage } from "./dump"
 import tripDig from "./trip-dig"
 import watch from "./watch"
-import chalk from "chalk"
-import { execSync } from "child_process"
 import { Post } from "./types"
 
 const cli = meow(
