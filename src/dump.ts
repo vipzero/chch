@@ -70,7 +70,9 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
     const m = infoText.match(/：(.*) ID:(.*)/) || []
     const dateStr = m[1]
     const userId = m[2]
-    const timestamp = dayjs(dateStr).unix()
+    const timestamp = dayjs(dateStr)
+      .locale("ja")
+      .unix()
     const comma = Number(dateStr.split(".")[1])
     const message = $dd.text().trim()
     posts.push({ number, name, userId, timestamp, comma, message })
@@ -100,7 +102,9 @@ export async function getThreadVip(url: string): Promise<Thread> {
       .text()
       .split(":")[1]
     const dateStr = div.find(".date").text()
-    const timestamp = dayjs(dateStr).unix()
+    const timestamp = dayjs(dateStr)
+      .locale("ja")
+      .unix()
     const comma = Number(dateStr.split(".")[1])
     const message = div
       .find(".message")
