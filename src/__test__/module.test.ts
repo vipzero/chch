@@ -31,7 +31,7 @@ test("get thread", async () => {
       "message": "日本のアニメとか漫画に登場する敵たいに同情できるような過去を持っていたりとか重い事情があったりとかそういうのが微塵もないような外道しか出てこないじゃん。   敵に思い過去とかの設定付けたらダメなんか？",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 1,
-      "timestamp": 1569972780,
+      "timestamp": 1570037580,
       "userId": "swYZ1cNv0",
     }
   `)
@@ -41,7 +41,7 @@ test("get thread", async () => {
       "message": "見てる作品少なそう",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 2,
-      "timestamp": 1569972828,
+      "timestamp": 1570037628,
       "userId": "/ycyjVeRd",
     }
   `)
