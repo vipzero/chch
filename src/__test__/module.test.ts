@@ -24,6 +24,11 @@ test("get thread", async () => {
   expect(dayjs()).toMatchInlineSnapshot(`"2019-10-02T12:50:34.887Z"`)
   expect(dayjs().utcOffset()).toMatchInlineSnapshot(`540`)
   expect(+dayjs()).toMatchInlineSnapshot(`1570020634900`)
+  expect(dayjs().unix()).toMatchInlineSnapshot(`1570021441`)
+  expect(dayjs("2019/07/07(日) 15:13:50.487").unix()).toMatchInlineSnapshot(
+    `1562480030`
+  )
+
   expect(thread.postCount).toMatchInlineSnapshot(`20`)
   expect(thread.size).toMatchInlineSnapshot(`"4KB"`)
   expect(thread.url).toMatchInlineSnapshot(
