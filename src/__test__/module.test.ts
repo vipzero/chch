@@ -1,5 +1,6 @@
 import fs from "fs"
 import iconv from "iconv-lite"
+import MockAdapter from "axios-mock-adapter"
 
 import m from "../"
 import { client } from "../dump"
@@ -7,7 +8,10 @@ import { client } from "../dump"
 const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
 
 const html = fs.readFileSync(__dirname + "/mock/thread.html")
+const mock = new MockAdapter(client)
 client.defaults.transformResponse = [() => iconv.decode(html, "Shift_JIS")]
+
+mock.onGet().reply(() => [200])
 
 test("get thread", async () => {
   const thread = await m.getThread(url)
