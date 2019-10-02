@@ -1,5 +1,5 @@
 [![npm version](https://badge.fury.io/js/chch.svg)](https://badge.fury.io/js/chch)
-![](https://github.com/elzup/reactal/workflows/Node%20CI/badge.svg)
+![](https://github.com/vipquality/chch/workflows/Node%20CI/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
