@@ -6,10 +6,6 @@ import dayjs from "dayjs"
 import _ from "lodash"
 import { Post, Thread } from "./types"
 
-// eslint-disable-next-line
-import "dayjs/locale/ja"
-dayjs.locale("ja")
-
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
@@ -101,7 +97,7 @@ export async function getThreadVip(url: string): Promise<Thread> {
       .text()
       .split(":")[1]
     const dateStr = div.find(".date").text()
-    const timestamp = +dayjs(dateStr)
+    const timestamp = dayjs(dateStr).unix()
     const comma = Number(dateStr.split(".")[1])
     const message = div
       .find(".message")
