@@ -8,6 +8,7 @@
     "chalk": "^2.4.2",
     "cheerio": "^1.0.0-rc.3",
     "dayjs": "^1.8.16",
+    "dayjs-plugin-utc": "^0.1.2",
     "holiday-jp": "^1.0.0",
     "iconv-lite": "^0.5.0",
     "lodash": "^4.17.15",

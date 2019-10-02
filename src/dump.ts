@@ -2,9 +2,12 @@ import cheerio from "cheerio"
 import iconv from "iconv-lite"
 import axios from "axios"
 import dayjs from "dayjs"
+import dayjsPluginUTC from "dayjs-plugin-utc"
 
 import _ from "lodash"
 import { Post, Thread } from "./types"
+
+dayjs.extend(dayjsPluginUTC)
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -67,7 +70,7 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
     const m = infoText.match(/：(.*) ID:(.*)/) || []
     const dateStr = m[1]
     const userId = m[2]
-    const timestamp = +dayjs(dateStr)
+    const timestamp = dayjs(dateStr).unix()
     const comma = Number(dateStr.split(".")[1])
     const message = $dd.text().trim()
     posts.push({ number, name, userId, timestamp, comma, message })
