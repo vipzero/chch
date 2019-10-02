@@ -35,6 +35,11 @@
       "git add"
     ]
   },
+  "keywords": [
+    "5ch",
+    "2ch",
+    "cli"
+  ],
   "files": [
     "dist"
   ],
