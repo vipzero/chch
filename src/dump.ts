@@ -2,8 +2,13 @@ import cheerio from "cheerio"
 import iconv from "iconv-lite"
 import axios from "axios"
 import dayjs from "dayjs"
+
 import _ from "lodash"
 import { Post, Thread } from "./types"
+
+// eslint-disable-next-line
+import "dayjs/locale/ja"
+dayjs.locale("ja")
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
