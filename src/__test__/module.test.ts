@@ -1,33 +1,42 @@
-import m from "../"
+import fs from "fs"
+import iconv from "iconv-lite"
 
-const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/"
+import m from "../"
+import { client } from "../dump"
+
+const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
+
+const html = fs.readFileSync(__dirname + "/mock/thread.html")
+client.defaults.transformResponse = [() => iconv.decode(html, "Shift_JIS")]
 
 test("get thread", async () => {
   const thread = await m.getThread(url)
-  expect(thread.title).toMatchInlineSnapshot(`">>5してから寝る"`)
-  expect(thread.postCount).toMatchInlineSnapshot(`1002`)
-  expect(thread.size).toMatchInlineSnapshot(`"142KB"`)
+  expect(thread.title).toMatchInlineSnapshot(
+    `"何でハリウッド映画に出てくる悪人って極悪な奴しかいないの？"`
+  )
+  expect(thread.postCount).toMatchInlineSnapshot(`20`)
+  expect(thread.size).toMatchInlineSnapshot(`"4KB"`)
   expect(thread.url).toMatchInlineSnapshot(
-    `"https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/"`
+    `"https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"`
   )
   expect(thread.posts[0]).toMatchInlineSnapshot(`
     Object {
-      "comma": 403,
-      "message": "やる",
+      "comma": 728,
+      "message": "日本のアニメとか漫画に登場する敵たいに同情できるような過去を持っていたりとか重い事情があったりとかそういうのが微塵もないような外道しか出てこないじゃん。   敵に思い過去とかの設定付けたらダメなんか？",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 1,
-      "timestamp": 1562153470403,
-      "userId": "z9nhF5kH0",
+      "timestamp": 1570005180728,
+      "userId": "swYZ1cNv0",
     }
   `)
   expect(thread.posts[1]).toMatchInlineSnapshot(`
     Object {
-      "comma": 554,
-      "message": "闇堕ち",
+      "comma": 924,
+      "message": "見てる作品少なそう",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 2,
-      "timestamp": 1562153492554,
-      "userId": "0iuT8jV7p",
+      "timestamp": 1570005228924,
+      "userId": "/ycyjVeRd",
     }
   `)
 })

@@ -19,6 +19,7 @@
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.138",
     "@types/node": "^12.7.5",
+    "axios-mock-adapter": "^1.17.0",
     "eslint": "^6.4.0",
     "husky": "^3.0.5",
     "jest": "^24.9.0",
@@ -46,6 +47,8 @@
     "hosyu": "ts-node src/hosyu.ts",
     "build": "tsc --build tsconfig.build.json",
     "deploy": "yarn build && yarn publish",
+    "lint": "eslint src/**/*.ts",
+    "test:mock": "curl https://hebi.5ch.net/test/read.cgi/news4vip/1570005180 > src/__test__/mock/thread.html",
     "test": "jest"
   }
 }

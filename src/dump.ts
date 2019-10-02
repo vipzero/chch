@@ -12,7 +12,7 @@ const listPageUrl = `${host}/news4vip/subback.html`
 axios.defaults.responseType = "arraybuffer"
 axios.defaults.transformResponse = [data => iconv.decode(data, "Shift_JIS")]
 
-const client = axios.create({ withCredentials: true })
+export const client = axios.create({ withCredentials: true })
 
 function titleParse(text: string): { title: string; count: number } | null {
   const m = text.match(/^\d+: ([\s\S]*?) \((\d+)\)$/)
