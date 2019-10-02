@@ -20,15 +20,6 @@ test("get thread", async () => {
     `"何でハリウッド映画に出てくる悪人って極悪な奴しかいないの？"`
   )
 
-  expect(new Date()).toMatchInlineSnapshot(`2019-10-02T12:50:34.880Z`)
-  expect(dayjs()).toMatchInlineSnapshot(`"2019-10-02T12:50:34.887Z"`)
-  expect(dayjs().utcOffset()).toMatchInlineSnapshot(`540`)
-  expect(+dayjs()).toMatchInlineSnapshot(`1570020634900`)
-  expect(dayjs().unix()).toMatchInlineSnapshot(`1570021441`)
-  expect(dayjs("2019/07/07(日) 15:13:50.487").unix()).toMatchInlineSnapshot(
-    `1562480030`
-  )
-
   expect(thread.postCount).toMatchInlineSnapshot(`20`)
   expect(thread.size).toMatchInlineSnapshot(`"4KB"`)
   expect(thread.url).toMatchInlineSnapshot(
@@ -40,7 +31,7 @@ test("get thread", async () => {
       "message": "日本のアニメとか漫画に登場する敵たいに同情できるような過去を持っていたりとか重い事情があったりとかそういうのが微塵もないような外道しか出てこないじゃん。   敵に思い過去とかの設定付けたらダメなんか？",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 1,
-      "timestamp": 1570004640,
+      "timestamp": 1569972780,
       "userId": "swYZ1cNv0",
     }
   `)
@@ -50,7 +41,7 @@ test("get thread", async () => {
       "message": "見てる作品少なそう",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 2,
-      "timestamp": 1570004688,
+      "timestamp": 1569972828,
       "userId": "/ycyjVeRd",
     }
   `)
