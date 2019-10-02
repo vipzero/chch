@@ -4,6 +4,7 @@ import MockAdapter from "axios-mock-adapter"
 
 import m from "../"
 import { client } from "../dump"
+import dayjs from "dayjs"
 
 const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
 
@@ -18,6 +19,11 @@ test("get thread", async () => {
   expect(thread.title).toMatchInlineSnapshot(
     `"何でハリウッド映画に出てくる悪人って極悪な奴しかいないの？"`
   )
+
+  expect(new Date()).toMatchInlineSnapshot(`2019-10-02T12:50:34.880Z`)
+  expect(dayjs()).toMatchInlineSnapshot(`"2019-10-02T12:50:34.887Z"`)
+  expect(dayjs().utcOffset()).toMatchInlineSnapshot(`540`)
+  expect(+dayjs()).toMatchInlineSnapshot(`1570020634900`)
   expect(thread.postCount).toMatchInlineSnapshot(`20`)
   expect(thread.size).toMatchInlineSnapshot(`"4KB"`)
   expect(thread.url).toMatchInlineSnapshot(
