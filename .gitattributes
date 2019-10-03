@@ -1,2 +1,2 @@
 yarn.lock binary
-src/__test__/mock/*.html binary linguist-vendored=false
+*.html binary linguist-vendored=false linguist-documentation=false
