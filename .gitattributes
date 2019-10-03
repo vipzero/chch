@@ -1,2 +1,2 @@
 yarn.lock binary
-*.html binary linguist-vendored
+**/mock/*.html binary linguist-vendored linguist-documentation
