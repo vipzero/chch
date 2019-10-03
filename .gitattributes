@@ -1,2 +1,2 @@
 yarn.lock binary
-*.html binary linguist-vendored=false linguist-documentation=false
+*.html binary linguist-vendored
