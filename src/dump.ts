@@ -1,7 +1,7 @@
 import cheerio from "cheerio"
-import iconv from "iconv-lite"
 import axios from "axios"
 import dayjs from "dayjs"
+import encoding from "encoding-japanese"
 
 import _ from "lodash"
 import { Post, Thread } from "./types"
@@ -12,7 +12,7 @@ const listPageUrl = `${host}/news4vip/subback.html`
 
 axios.defaults.responseType = "arraybuffer"
 axios.defaults.transformResponse = data =>
-  typeof data === "object" ? iconv.decode(data, "Shift_JIS") : data
+  encoding.convert(data, { to: "UNICODE", from: "SJIS", type: "string" })
 
 export const client = axios.create({ withCredentials: true })
 

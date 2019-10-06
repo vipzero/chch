@@ -1,6 +1,6 @@
 import fs from "fs"
-import iconv from "iconv-lite"
 import MockAdapter from "axios-mock-adapter"
+import encoding from "encoding-japanese"
 
 import m from "../"
 import { client } from "../dump"
@@ -10,7 +10,9 @@ const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
 const html = fs.readFileSync(__dirname + "/mock/thread.html")
 const mock = new MockAdapter(client)
 
-client.defaults.transformResponse = [() => iconv.decode(html, "Shift_JIS")]
+client.defaults.transformResponse = [
+  () => encoding.convert(html, { to: "UNICODE", from: "SJIS", type: "string" }),
+]
 
 mock.onGet().reply(() => [200])
 
