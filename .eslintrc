@@ -1,9 +1,5 @@
 {
-  "extends": [
-    "@elzup/eslint-config",
-    "@elzup/eslint-config/typescript",
-    "@elzup/eslint-config/jest"
-  ],
+  "extends": ["nzap", "nzap/typescript", "nzap/jest"],
   "parserOptions": {
     "project": null
   }
