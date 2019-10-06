@@ -118,4 +118,7 @@ switch (cli.input[0]) {
   case "post":
     postMessage(cli.input[1], cli.input[2])
     break
+  default:
+    console.log(`${cli.input[1]} command not found. chch --help`)
+    break
 }

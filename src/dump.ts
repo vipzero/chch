@@ -18,6 +18,7 @@ export const client = axios.create({ withCredentials: true })
 
 function titleParse(text: string): { title: string; count: number } | null {
   const m = text.match(/^\d+: ([\s\S]*?) \((\d+)\)$/)
+
   if (!m || !m[1]) {
     return null
   }
@@ -30,9 +31,11 @@ export async function getThreads() {
   const res = await client.get(listPageUrl)
   const $ = cheerio.load(res.data)
   const threads: ThreadMin[] = []
+
   $("#trad > a").map((i, elA) => {
     const a = $(elA)
     const res = titleParse(a.text())
+
     if (!res || !res.title) {
       return
     }
@@ -40,6 +43,7 @@ export async function getThreads() {
     const href = a.attr("href")
     const id = href.split("/")[0]
     const url = makeThreadUrl(id)
+
     threads.push({ id, title, url, count })
   })
   return { threads }
@@ -54,6 +58,7 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
   const size = $("font > b").text()
 
   const posts: Post[] = []
+
   // console.log(_.zip($("dl > dt"), $("dl > dd")))
   _.zip($("dl > dt"), $("dl > dd")).map(([dt, dd], i) => {
     if (!dd || !dt) {
@@ -71,9 +76,11 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
     const timestamp = dayjs(dateStr).unix() + dayjs().utcOffset() * 60
     const comma = Number(dateStr.split(".")[1])
     const message = $dd.text().trim()
+
     posts.push({ number, name, userId, timestamp, comma, message })
   })
   const postCount = posts.length
+
   return { title, url, postCount, size, posts }
 }
 
@@ -87,8 +94,8 @@ export async function getThreadVip(url: string): Promise<Thread> {
     .text()
     .match(/\d+KB/)
   const size = m ? m[0] : ""
-
   const posts: Post[] = []
+
   $(".post").map((i, elA) => {
     const div = $(elA)
     const number = Number(div.find(".number").text())
@@ -104,9 +111,11 @@ export async function getThreadVip(url: string): Promise<Thread> {
       .find(".message")
       .text()
       .trim()
+
     posts.push({ number, name, userId, timestamp, comma, message })
   })
   const postCount = posts.length
+
   return { title, url, postCount, size, posts }
 }
 
@@ -120,6 +129,7 @@ export function getThread(url: string) {
 
 function generateForm(data: Record<string, string>): URLSearchParams {
   const params = new URLSearchParams()
+
   _.each(data, (value, key) => {
     params.append(key, value)
   })

@@ -25,10 +25,12 @@ async function tripDig(
   const r = new RegExp(regexPatch(search))
   const interval = _interval ? Number(_interval) : 100
   let n = 0
+
   while (true) {
     n++
     const str = `#${prefix}${i.next().value}`
     const trip = genTrip(str)
+
     if (trip.match(r)) {
       console.log(str)
       console.log(trip)

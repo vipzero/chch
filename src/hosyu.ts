@@ -19,8 +19,10 @@ const startText = `
 16:00-19:00 15分以内
 19:00-00:00 5分以内
 `
+
 function isHoliday(date: Date) {
   const day = date.getDay()
+
   return day === 0 || day === 6 || holiday.isHoliday(date)
 }
 
@@ -33,6 +35,7 @@ async function main(threadURL: string, text: string) {
 
   const now = new Date()
   const next = nextIntervalMinute(now)
+
   console.log(`posted: ${now} next: ${next}min`)
   setTimeout(
     () =>
