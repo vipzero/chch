@@ -11,9 +11,8 @@ const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
 
 axios.defaults.responseType = "arraybuffer"
-axios.defaults.transformResponse = [
-  data => (data ? iconv.decode(data, "Shift_JIS") : ""),
-]
+axios.defaults.transformResponse = data =>
+  typeof data === "object" ? iconv.decode(data, "Shift_JIS") : data
 
 export const client = axios.create({ withCredentials: true })
 
