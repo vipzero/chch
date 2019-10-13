@@ -1547,7 +1547,7 @@ escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-nzap@^1.1.0:
+eslint-config-nzap@1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/eslint-config-nzap/-/eslint-config-nzap-1.2.4.tgz#f95d7af2e131963d33c9984ab405b07c3e099c41"
   integrity sha512-FGnqCEEQYhXOlehC7cNLZPChj740J+m3GIYyOZs82dhYuitKeiqqCqZAshWq5yBaUzMHZOURq2WDKVmKNKENYA==
