@@ -5,6 +5,7 @@ import encoding from "encoding-japanese"
 
 import _ from "lodash"
 import { Post, Thread } from "./types"
+import { normalizeUrl } from "./util"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -119,7 +120,9 @@ export async function getThreadVip(url: string): Promise<Thread> {
   return { title, url, postCount, size, posts }
 }
 
-export function getThread(url: string) {
+export function getThread(_url: string) {
+  const url = normalizeUrl(_url)
+
   if (part4VipRegex.exec(url)) {
     return getThreadPart4Vip(url)
   } else {

@@ -1,9 +1,6 @@
 import _ from "lodash"
 
-export function hosyuIntervalTimeMinute(
-  hour: number,
-  holiday = false
-): number {
+export function hosyuIntervalTimeMinute(hour: number, holiday = false): number {
   if (holiday) {
     if (hour <= 2) {
       return 10
@@ -64,3 +61,6 @@ export function* increment(start = "a") {
     yield r
   }
 }
+
+export const normalizeUrl = (url: string) =>
+  url.endsWith("/") ? url.substr(0, url.length - 1) : url
