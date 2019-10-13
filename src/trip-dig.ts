@@ -7,7 +7,7 @@ const sleep = (msec: number) =>
 
 // ◆のマッチに適用する
 function regexPatch(str: string): string {
-  if (str[0] !== "^") {
+  if (!str.startsWith("^")) {
     return str
   }
   return "◆" + _.tail(str).join("")
@@ -31,7 +31,7 @@ async function tripDig(
     const str = `#${prefix}${i.next().value}`
     const trip = genTrip(str)
 
-    if (trip.match(r)) {
+    if (r.exec(trip)) {
       console.log(str)
       console.log(trip)
     }

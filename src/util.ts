@@ -2,7 +2,7 @@ import _ from "lodash"
 
 export function hosyuIntervalTimeMinute(
   hour: number,
-  holiday: boolean = false
+  holiday = false
 ): number {
   if (holiday) {
     if (hour <= 2) {
@@ -42,7 +42,7 @@ export function hosyuIntervalTimeMinute(
 
 const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-export function* increment(start: string = "a") {
+export function* increment(start = "a") {
   const nexts = start.split("").map(v => chars.indexOf(v))
 
   while (true) {

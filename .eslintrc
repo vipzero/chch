@@ -1,6 +1,6 @@
 {
   "extends": ["nzap", "nzap/typescript", "nzap/jest"],
-  "parserOptions": {
-    "project": null
+  "rules": {
+    "@typescript-eslint/explicit-function-return-type": 0
   }
 }

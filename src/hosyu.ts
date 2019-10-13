@@ -43,7 +43,7 @@ async function main(threadURL: string, text: string) {
         threadURL,
         "ほー" +
           "さしすせそ".split("")[Math.floor(Math.random() * 5)] +
-          Math.floor(Math.random() * 5)
+          `${Math.floor(Math.random() * 5)}`
       ),
     next * 60 * 1000
   )

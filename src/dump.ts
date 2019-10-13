@@ -15,9 +15,12 @@ axios.defaults.transformResponse = data =>
   encoding.convert(data, { to: "UNICODE", from: "SJIS", type: "string" })
 
 export const client = axios.create({ withCredentials: true })
+const sizeRegex = /\d+KB/
+const part4VipRegex = /vip2ch\.com/
+const resHeaderMatchRegex = /^\d+: ([\s\S]*?) \((\d+)\)$/
 
 function titleParse(text: string): { title: string; count: number } | null {
-  const m = text.match(/^\d+: ([\s\S]*?) \((\d+)\)$/)
+  const m = resHeaderMatchRegex.exec(text)
 
   if (!m || !m[1]) {
     return null
@@ -70,7 +73,7 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
     const number = i + 1
     const name = $dt.find(".name").text()
     const infoText = $dt.find(".info").text()
-    const m = infoText.match(/：(.*) ID:(.*)/) || []
+    const m = /：(.*) ID:(.*)/.exec(infoText) || []
     const dateStr = m[1]
     const userId = m[2]
     const timestamp = dayjs(dateStr).unix() + dayjs().utcOffset() * 60
@@ -86,13 +89,10 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
 
 export async function getThreadVip(url: string): Promise<Thread> {
   const $ = cheerio.load((await client.get(url)).data)
-
   const title = $(".title")
     .text()
     .trim()
-  const m = $(".metastats.meta.centered")
-    .text()
-    .match(/\d+KB/)
+  const m = sizeRegex.exec($(".metastats.meta.centered").text())
   const size = m ? m[0] : ""
   const posts: Post[] = []
 
@@ -120,7 +120,7 @@ export async function getThreadVip(url: string): Promise<Thread> {
 }
 
 export function getThread(url: string) {
-  if (url.match(/vip2ch\.com/)) {
+  if (part4VipRegex.exec(url)) {
     return getThreadPart4Vip(url)
   } else {
     return getThreadVip(url)
@@ -136,8 +136,13 @@ function generateForm(data: Record<string, string>): URLSearchParams {
   return params
 }
 
-const parseSetCookies = (headers: Record<string, any>): string[] => {
-  return _.get(headers, ["set-cookie"], []).map(v => v.split(";")[0])
+const parseSetCookies = (
+  headers: Record<string, string | string[]>
+): string[] => {
+  if (!("set-cookie" in headers) || typeof headers["set-cookie"] === "string") {
+    return []
+  }
+  return headers["set-cookie"].map(v => v.split(";")[0])
 }
 
 export async function postMessage(url, message) {
@@ -185,7 +190,7 @@ export async function postMessage(url, message) {
   const post = headers => client.post<string | null>(bbsUrl, form, { headers })
   const res = await post(headers)
 
-  if (res.data && res.data.indexOf("書き込み確認") !== -1) {
+  if (res.data && res.data.includes("書き込み確認")) {
     parseSetCookies(res.headers).forEach(s => cookies.push(s))
     headers.cookie = cookies.join("; ")
     await post(headers)
