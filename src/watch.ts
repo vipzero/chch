@@ -1,5 +1,4 @@
 import { getThread } from "./dump"
-
 import { Post } from "./types"
 
 async function watch(
@@ -13,19 +12,22 @@ async function watch(
   thread.posts.forEach(v => {
     readed[v.number] = true
   })
-  const memo = { nthCall: 0 }
+
+  const memo = { nthCall: 0, next: 1 + thread.posts.length }
 
   gotPostCallback(thread.posts, memo.nthCall)
   memo.nthCall++
   let taskId: null | NodeJS.Timeout = null
 
   async function task() {
-    const thread = await getThread(threadURL)
+    const thread = await getThread(threadURL, memo.next)
 
-    crawledCallback(thread.postCount)
-    const newPosts = thread.posts.filter(v => !readed[v.number])
+    thread.posts.shift()
+    const newPosts = thread.posts
 
     memo.nthCall++
+    memo.next += newPosts.length
+    crawledCallback(newPosts.length)
     gotPostCallback(newPosts, memo.nthCall)
     newPosts.forEach(post => {
       readed[post.number] = true

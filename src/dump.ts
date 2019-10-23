@@ -53,8 +53,11 @@ export async function getThreads() {
   return { threads }
 }
 
-export async function getThreadPart4Vip(url: string): Promise<Thread> {
-  const $ = cheerio.load((await client.get(url)).data)
+export async function getThreadPart4Vip(
+  url: string,
+  from = 1
+): Promise<Thread> {
+  const $ = cheerio.load((await client.get(`${url}${from}-`)).data)
 
   const title = $("h1")
     .text()
@@ -88,8 +91,8 @@ export async function getThreadPart4Vip(url: string): Promise<Thread> {
   return { title, url, postCount, size, posts }
 }
 
-export async function getThreadVip(url: string): Promise<Thread> {
-  const $ = cheerio.load((await client.get(url)).data)
+export async function getThreadVip(url: string, from = 1): Promise<Thread> {
+  const $ = cheerio.load((await client.get(`${url}${from}-`)).data)
   const title = $(".title")
     .text()
     .trim()
@@ -120,13 +123,13 @@ export async function getThreadVip(url: string): Promise<Thread> {
   return { title, url, postCount, size, posts }
 }
 
-export function getThread(_url: string) {
+export function getThread(_url: string, from = 1) {
   const url = normalizeUrl(_url)
 
   if (part4VipRegex.exec(url)) {
-    return getThreadPart4Vip(url)
+    return getThreadPart4Vip(url, from)
   } else {
-    return getThreadVip(url)
+    return getThreadVip(url, from)
   }
 }
 

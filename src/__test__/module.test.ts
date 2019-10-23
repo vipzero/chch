@@ -26,7 +26,7 @@ test("get thread", async () => {
   expect(thread.postCount).toMatchInlineSnapshot(`20`)
   expect(thread.size).toMatchInlineSnapshot(`"4KB"`)
   expect(thread.url).toMatchInlineSnapshot(
-    `"https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"`
+    `"https://hebi.5ch.net/test/read.cgi/news4vip/1570005180/"`
   )
   expect(thread.posts[0]).toMatchInlineSnapshot(`
     Object {

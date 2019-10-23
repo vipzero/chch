@@ -63,4 +63,4 @@ export function* increment(start = "a") {
 }
 
 export const normalizeUrl = (url: string) =>
-  url.endsWith("/") ? url.substr(0, url.length - 1) : url
+  url + (url.endsWith("/") ? "" : "/")
