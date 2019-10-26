@@ -1,11 +1,10 @@
 import cheerio from "cheerio"
 import axios from "axios"
-import dayjs from "dayjs"
 import encoding from "encoding-japanese"
 
 import _ from "lodash"
 import { Post, Thread } from "./types"
-import { normalizeUrl } from "./util"
+import { normalizeUrl, dateParse } from "./util"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -80,7 +79,7 @@ export async function getThreadPart4Vip(
     const m = /：(.*) ID:(.*)/.exec(infoText) || []
     const dateStr = m[1]
     const userId = m[2]
-    const timestamp = dayjs(dateStr).unix() + dayjs().utcOffset() * 60
+    const timestamp = dateParse(dateStr)
     const comma = Number(dateStr.split(".")[1])
     const message = $dd.text().trim()
 
@@ -109,7 +108,7 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
       .text()
       .split(":")[1]
     const dateStr = div.find(".date").text()
-    const timestamp = dayjs(dateStr).unix() + dayjs().utcOffset() * 60
+    const timestamp = dateParse(dateStr)
     const comma = Number(dateStr.split(".")[1])
     const message = div
       .find(".message")

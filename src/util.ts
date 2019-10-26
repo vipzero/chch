@@ -61,6 +61,31 @@ export function* increment(start = "a") {
     yield r
   }
 }
-
 export const normalizeUrl = (url: string) =>
   url + (url.endsWith("/") ? "" : "/")
+
+export const easyRegex = (pattern: string): string =>
+  pattern.replace(/%d/g, "(\\d+)").replace(/%s/g, "(.+)")
+
+// 2019/10/26(土) 00:00:07.589
+export const dateParse = (str: string): number => {
+  const er = easyRegex("%d/%d/%d\\(.+\\) %d:%d:%d\\.%d")
+  const m = new RegExp(er).exec(str)
+
+  if (!m) {
+    return 0
+  }
+  m.shift()
+  const [y, mon, d, h, min, s, ms] = m
+  const date = Date.UTC(
+    Number(y),
+    Number(mon) - 1,
+    Number(d),
+    Number(h),
+    Number(min),
+    Number(s),
+    Number(ms)
+  )
+
+  return date - 9 * 60 * 60 * 1000
+}

@@ -1,9 +1,9 @@
 import fs from "fs"
 import MockAdapter from "axios-mock-adapter"
 import encoding from "encoding-japanese"
-
 import m from "../"
 import { client } from "../dump"
+import { dateParse } from "../util"
 
 const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
 
@@ -34,7 +34,7 @@ test("get thread", async () => {
       "message": "日本のアニメとか漫画に登場する敵たいに同情できるような過去を持っていたりとか重い事情があったりとかそういうのが微塵もないような外道しか出てこないじゃん。   敵に思い過去とかの設定付けたらダメなんか？",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 1,
-      "timestamp": 1570037580,
+      "timestamp": 1570005180728,
       "userId": "swYZ1cNv0",
     }
   `)
@@ -44,8 +44,15 @@ test("get thread", async () => {
       "message": "見てる作品少なそう",
       "name": "以下、5ちゃんねるからVIPがお送りします",
       "number": 2,
-      "timestamp": 1570037628,
+      "timestamp": 1570005228924,
       "userId": "/ycyjVeRd",
     }
   `)
+})
+
+test("date parse", () => {
+  const res = dateParse("2019/10/26(土) 00:00:07.589")
+
+  expect(res).toMatchInlineSnapshot(`1572015607589`)
+  expect(new Date(res)).toMatchInlineSnapshot(`2019-10-25T15:00:07.589Z`)
 })

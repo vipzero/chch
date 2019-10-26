@@ -6,7 +6,7 @@ import chalk from "chalk"
 import hosyu from "./hosyu"
 import { getThread, getThreads, postMessage } from "./dump"
 import tripDig from "./trip-dig"
-import watch from "./watch"
+import watch, { watchSmart } from "./watch"
 import { Post } from "./types"
 
 const cli = meow(
@@ -20,7 +20,7 @@ const cli = meow(
 
   Options
     --text, -t message text default "ほ" in hosyu
-    --say, -s voice speak in watch
+    --smart, -s voice speak in watch
 
   Examples
     $ chch hosyu http://hebi.5ch.net/test/read.cgi/news4vip/1556625403 --text "保守"
@@ -67,6 +67,7 @@ const cli = meow(
     > ◆vipV0VjY.j7I
 
     $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ --command "say got"
+    $ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ -s
     
 `,
   {
@@ -78,6 +79,10 @@ const cli = meow(
       command: {
         type: "string",
         alias: "c",
+      },
+      smart: {
+        type: "boolean",
+        alias: "s",
       },
     },
   }
@@ -113,7 +118,11 @@ switch (cli.input[0]) {
     tripDig(cli.input[1], cli.input[2], cli.input[3], cli.input[4])
     break
   case "watch":
-    watch(cli.input[1], gotPostsCallback, crawledCallback)
+    if (cli.flags.smart) {
+      watchSmart(cli.input[1], gotPostsCallback, crawledCallback)
+    } else {
+      watch(cli.input[1], gotPostsCallback, crawledCallback)
+    }
     break
   case "post":
     postMessage(cli.input[1], cli.input[2])
