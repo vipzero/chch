@@ -94,7 +94,7 @@ const crawledCallback: CrawledCallback = ({
   recentCount10Min,
   nextCallMs,
 }) => {
-  if (cli.flags.command) {
+  if (newPosts.length > 0 && cli.flags.command) {
     execSync(cli.flags.command)
   }
   newPosts.forEach(post => {
