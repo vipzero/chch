@@ -1,5 +1,5 @@
 [![npm version](https://badge.fury.io/js/chch.svg)](https://badge.fury.io/js/chch)
-![](https://github.com/vipzero/chch/workflows/Node%20CI/badge.svg)
+![github actions](https://github.com/vipzero/chch/workflows/Node%20CI/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
@@ -43,7 +43,7 @@ Thread object with:
   - `number` (number) - res number
   - `name` (string) - 
   - `userId` (string) - ID
-  - `timestamp` (number) - 
+  - `timestamp` (number) - Unix Epoch
   - `comma` (number) - comma of timestamp
   - `message` (string) - 
 
@@ -127,7 +127,7 @@ $ chch watch [url] [command]
 
 ```
 # 受取時に音を出す
-$ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ "say got"
+$ chch watch https://hebi.5ch.net/test/read.cgi/news4vip/1562153470/ -c "say got"
 ```
 
 ### hosyu
@@ -160,7 +160,7 @@ posted: Sat May 11 2019 15:06:53 GMT+0900 (GMT+09:00) next: 15min
 
 
 
-### trip-dig(分離予定)
+### trip-dig [deprecated]
 
 トリップの採掘
 
