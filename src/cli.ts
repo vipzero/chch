@@ -6,8 +6,8 @@ import chalk from "chalk"
 import hosyu from "./hosyu"
 import { getThread, getThreads, postMessage } from "./dump"
 import tripDig from "./trip-dig"
-import watch, { watchSmart } from "./watch"
-import { Post } from "./types"
+import { watch, watchSmart } from "./watch"
+import { CrawledCallback } from "./types"
 
 const cli = meow(
   `
@@ -88,16 +88,28 @@ const cli = meow(
   }
 )
 
-const gotPostsCallback = (posts: Post[]) => {
-  posts.forEach(post => {
-    if (cli.flags.command) {
-      execSync(cli.flags.command)
-    }
+const crawledCallback: CrawledCallback = ({
+  newPosts,
+  nthCall,
+  recentCount10Min,
+  nextCallMs,
+}) => {
+  if (cli.flags.command) {
+    execSync(cli.flags.command)
+  }
+  newPosts.forEach(post => {
     console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
   })
-}
-const crawledCallback = (newPostCount: number) => {
-  console.log(chalk.gray(`crawl thread: got ${newPostCount}`))
+  console.log(
+    chalk.gray(
+      `crawled ${nthCall}` +
+        ` | ` +
+        chalk.underline(String(newPosts.length) + "post") +
+        ` | ` +
+        chalk.underline(String(recentCount10Min) + "post/10min") +
+        ` => next ${chalk.underline(String(nextCallMs) + "ms")} ago`
+    )
+  )
 }
 
 switch (cli.input[0]) {
@@ -119,9 +131,13 @@ switch (cli.input[0]) {
     break
   case "watch":
     if (cli.flags.smart) {
-      watchSmart(cli.input[1], gotPostsCallback, crawledCallback)
+      const watcher = watchSmart(cli.input[1], crawledCallback)
+
+      watcher.start()
     } else {
-      watch(cli.input[1], gotPostsCallback, crawledCallback)
+      const watcher = watch(cli.input[1], crawledCallback)
+
+      watcher.start()
     }
     break
   case "post":

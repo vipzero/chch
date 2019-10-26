@@ -1,101 +1,69 @@
 import { getThread } from "./dump"
-import { Post } from "./types"
+import { Post, CrawledCallback } from "./types"
 
-async function watch(
+const min10 = 10 * 60 * 1000
+
+const recentPostCount = (posts: Post[]) =>
+  posts.filter(post => post.timestamp >= +Date.now() - min10).length
+
+function watcher(
   threadURL: string,
-  gotPostCallback: (post: Post[], nthCall: number) => void = () => {},
-  crawledCallback: (newPostCount: number) => void = () => {}
-) {
-  const readed: Record<number, boolean> = {}
-  const thread = await getThread(threadURL)
-
-  thread.posts.forEach(v => {
-    readed[v.number] = true
-  })
-
-  const memo = { nthCall: 0, next: 1 + thread.posts.length }
-
-  gotPostCallback(thread.posts, memo.nthCall)
-  memo.nthCall++
-  let taskId: null | NodeJS.Timeout = null
-
-  async function task() {
-    const thread = await getThread(threadURL, memo.next)
-
-    thread.posts.shift()
-    const newPosts = thread.posts
-
-    memo.nthCall++
-    memo.next += newPosts.length
-    crawledCallback(newPosts.length)
-    gotPostCallback(newPosts, memo.nthCall)
-    newPosts.forEach(post => {
-      readed[post.number] = true
-    })
-  }
-  taskId = setInterval(task, 1000 * 60)
-  return taskId
-}
-
-const min10 = 10 * 60
-
-export const recentPostCount = (posts: Post[]) => {
-  console.log(+Date.now() - min10)
-  console.log(posts.map(post => post.timestamp))
-  const l = posts.filter(post => post.timestamp >= +Date.now() / 1000 - min10)
-    .length
-
-  console.log(l)
-  return l
-}
-
-export const nextTime = (num: number) => {
-  return Math.min((min10 * 1000) / (num + 1), 60000)
-}
-
-export async function watchSmart(
-  threadURL: string,
-  gotPostCallback: (post: Post[], nthCall: number) => void = () => {},
-  crawledCallback: (newPostCount: number) => void = () => {},
-  setTimeoutIdCallback: (timeout: NodeJS.Timeout) => void = () => {}
+  crawledCallback: CrawledCallback = () => {},
+  crawTimeFunc: (recentCount: number) => number
 ) {
   const readed: Record<number, Post> = {}
-  const thread = await getThread(threadURL)
+  const memo = { nthCall: 0, next: 1, timeout: <NodeJS.Timeout | null>null }
 
-  thread.posts.forEach(v => {
-    readed[v.number] = v
-  })
-
-  const memo = {
-    nthCall: 0,
-    next: 1 + thread.posts.length,
+  function stop() {
+    if (!memo.timeout) {
+      return
+    }
+    clearTimeout(memo.timeout)
+    memo.timeout = null
   }
-
-  gotPostCallback(thread.posts, memo.nthCall)
-  memo.nthCall++
-
-  async function task() {
+  async function run() {
+    stop()
     const thread = await getThread(threadURL, memo.next)
 
-    thread.posts.shift()
+    if (memo.next !== 1) {
+      thread.posts.shift()
+    }
     const newPosts = thread.posts
 
-    memo.nthCall++
-    memo.next += newPosts.length
-    crawledCallback(newPosts.length)
-    gotPostCallback(newPosts, memo.nthCall)
     newPosts.forEach(post => {
       readed[post.number] = post
     })
-    const nt = nextTime(recentPostCount(Object.values(readed)))
+    const recentCount10Min = recentPostCount(Object.values(readed))
+    const nextCallMs = crawTimeFunc(recentCount10Min)
+    const timeout = setTimeout(run, nextCallMs)
 
-    console.log(`next: ${nt} ms ago`)
-    setTimeoutIdCallback(setTimeout(task, nt))
+    crawledCallback({
+      nthCall: memo.nthCall,
+      newPosts,
+      recentCount10Min,
+      nextCallMs,
+      timeout,
+    })
+    memo.nthCall++
+    memo.timeout = timeout
+    memo.next = Object.keys(readed).length + 1
   }
-  const nt = nextTime(recentPostCount(Object.values(readed)))
-
-  console.log(`next: ${nt} ms ago`)
-  setTimeoutIdCallback(setTimeout(task, nt))
+  return {
+    start: run,
+    restart: run,
+    stop,
+  }
 }
 
-export default watch
+const nextTime = (num: number) => Math.min((min10 * 1000) / (num + 1), 60000)
+
+export const watchSmart = (
+  threadURL: string,
+  crawledCallback: CrawledCallback = () => {}
+) => watcher(threadURL, crawledCallback, nextTime)
+
+export const watch = (
+  threadURL: string,
+  crawledCallback: CrawledCallback = () => {},
+  intervalMs: number = 1 * 60 * 1000
+) => watcher(threadURL, crawledCallback, () => intervalMs)

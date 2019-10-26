@@ -14,3 +14,11 @@ export type Thread = {
   size: string
   posts: Post[]
 }
+
+export type CrawledCallback = (res: {
+  nthCall: number
+  newPosts: Post[]
+  recentCount10Min: number
+  nextCallMs: number
+  timeout: NodeJS.Timeout
+}) => void
