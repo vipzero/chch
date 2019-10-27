@@ -6,14 +6,17 @@ export type Wacchoi = {
   bb: string
   cccc: string
 }
+
+export type PostName = {
+  raw: string
+  base: string
+  wacchoi: false | Wacchoi
+  isDefault: boolean
+}
+
 export type Post = {
   number: number
-  name: {
-    raw: string
-    base: string
-    wacchoi: false | Wacchoi
-    isDefault: boolean
-  }
+  name: PostName
   userId: string
   timestamp: number
   comma: number
@@ -26,6 +29,13 @@ export type Thread = {
   postCount: number
   size: string
   posts: Post[]
+}
+
+export type ThreadMin = {
+  id: string
+  title: string
+  url: string
+  count: number
 }
 
 export type CrawledCallback = (res: {

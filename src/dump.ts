@@ -3,8 +3,8 @@ import axios from "axios"
 import encoding from "encoding-japanese"
 
 import _ from "lodash"
-import { Post, Thread } from "./types"
-import { normalizeUrl, dateParse } from "./util"
+import { Post, Thread, PostName, ThreadMin } from "./types"
+import { normalizeUrl, dateParse, parseWacchoi } from "./util"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -28,7 +28,17 @@ function titleParse(text: string): { title: string; count: number } | null {
 
   return { title: m[1], count: Number(m[2]) }
 }
-type ThreadMin = { id: string; title: string; url: string; count: number }
+
+const toName = (raw: string): PostName => {
+  const [wacchoi, base] = parseWacchoi(raw)
+
+  return {
+    raw,
+    base,
+    wacchoi,
+    isDefault: base === "以下、5ちゃんねるからVIPがお送りします",
+  }
+}
 
 export async function getThreads() {
   const res = await client.get(listPageUrl)
@@ -74,7 +84,7 @@ export async function getThreadPart4Vip(
     const $dt = $(dt)
     const $dd = $(dd)
     const number = i + 1
-    const name = $dt.find(".name").text()
+    const name = toName($dt.find(".name").text())
     const infoText = $dt.find(".info").text()
     const m = /：(.*) ID:(.*)/.exec(infoText) || []
     const dateStr = m[1]
@@ -102,7 +112,7 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
   $(".post").map((i, elA) => {
     const div = $(elA)
     const number = Number(div.find(".number").text())
-    const name = div.find(".name").text()
+    const name = toName(div.find(".name").text())
     const userId = div
       .find(".uid")
       .text()
@@ -115,7 +125,14 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
       .text()
       .trim()
 
-    posts.push({ number, name, userId, timestamp, comma, message })
+    posts.push({
+      number,
+      name,
+      userId,
+      timestamp,
+      comma,
+      message,
+    })
   })
   const postCount = posts.length
 
