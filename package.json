@@ -53,7 +53,7 @@
     "build": "tsc --build tsconfig.build.json",
     "deploy": "yarn build && yarn publish",
     "lint": "eslint --ext .ts src",
-    "test:mock": "curl https://hebi.5ch.net/test/read.cgi/news4vip/1570005180 > src/__test__/mock/thread.html",
+    "test:mock": "curl http://hebi.5ch.net/test/read.cgi/news4vip/1572163600 > src/__test__/mock/thread.html",
     "test": "jest"
   }
 }

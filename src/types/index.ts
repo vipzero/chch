@@ -1,6 +1,19 @@
+export type Wacchoi = {
+  raw: string
+  nickname: string
+  main: string
+  aa: string
+  bb: string
+  cccc: string
+}
 export type Post = {
   number: number
-  name: string
+  name: {
+    raw: string
+    base: string
+    wacchoi: false | Wacchoi
+    isDefault: boolean
+  }
   userId: string
   timestamp: number
   comma: number

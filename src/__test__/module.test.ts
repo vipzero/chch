@@ -3,7 +3,7 @@ import MockAdapter from "axios-mock-adapter"
 import encoding from "encoding-japanese"
 import m from "../"
 import { client } from "../dump"
-import { dateParse } from "../util"
+import { dateParse, parseWacchoi } from "../util"
 
 const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
 
@@ -19,33 +19,86 @@ mock.onGet().reply(() => [200])
 test("get thread", async () => {
   const thread = await m.getThread(url)
 
-  expect(thread.title).toMatchInlineSnapshot(
-    `"何でハリウッド映画に出てくる悪人って極悪な奴しかいないの？"`
-  )
+  expect(thread.title).toMatchInlineSnapshot(`"テストスレッド"`)
 
-  expect(thread.postCount).toMatchInlineSnapshot(`20`)
-  expect(thread.size).toMatchInlineSnapshot(`"4KB"`)
+  expect(thread.postCount).toMatchInlineSnapshot(`8`)
+  expect(thread.size).toMatchInlineSnapshot(`"1KB"`)
   expect(thread.url).toMatchInlineSnapshot(
     `"https://hebi.5ch.net/test/read.cgi/news4vip/1570005180/"`
   )
   expect(thread.posts[0]).toMatchInlineSnapshot(`
     Object {
-      "comma": 728,
-      "message": "日本のアニメとか漫画に登場する敵たいに同情できるような過去を持っていたりとか重い事情があったりとかそういうのが微塵もないような外道しか出てこないじゃん。   敵に思い過去とかの設定付けたらダメなんか？",
-      "name": "以下、5ちゃんねるからVIPがお送りします",
+      "comma": 691,
+      "message": "テストスレです… VIPQ2_EXTDAT: checked:vvvvv:1000:512:: EXT was configured",
+      "name": "以下、5ちゃんねるからVIPがお送りします (３級) (ﾜｯﾁｮｲWW 8f70-cmdO)",
       "number": 1,
-      "timestamp": 1570005180728,
-      "userId": "swYZ1cNv0",
+      "timestamp": 1572163600691,
+      "userId": "EZLQKi1b0",
     }
   `)
   expect(thread.posts[1]).toMatchInlineSnapshot(`
     Object {
-      "comma": 924,
-      "message": "見てる作品少なそう",
-      "name": "以下、5ちゃんねるからVIPがお送りします",
+      "comma": 618,
+      "message": "偽名前",
+      "name": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
       "number": 2,
-      "timestamp": 1570005228924,
-      "userId": "/ycyjVeRd",
+      "timestamp": 1572163639618,
+      "userId": "EZLQKi1b0",
+    }
+  `)
+
+  expect(thread.posts[2]).toMatchInlineSnapshot(`
+    Object {
+      "comma": 704,
+      "message": "空名前",
+      "name": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+      "number": 3,
+      "timestamp": 1572163653704,
+      "userId": "EZLQKi1b0",
+    }
+  `)
+
+  expect(thread.posts[3]).toMatchInlineSnapshot(`
+    Object {
+      "comma": 287,
+      "message": "カスタム名前",
+      "name": "カスタム (ﾜｯﾁｮｲWW 8f70-cmdO)",
+      "number": 4,
+      "timestamp": 1572163673287,
+      "userId": "EZLQKi1b0",
+    }
+  `)
+
+  expect(thread.posts[4]).toMatchInlineSnapshot(`
+    Object {
+      "comma": 977,
+      "message": "さげ",
+      "name": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+      "number": 5,
+      "timestamp": 1572163939977,
+      "userId": "EZLQKi1b0",
+    }
+  `)
+
+  expect(thread.posts[5]).toMatchInlineSnapshot(`
+    Object {
+      "comma": 380,
+      "message": "#トリップ",
+      "name": "トリップ ◆XSSH/ryx32  (ﾜｯﾁｮｲWW 8f70-cmdO)",
+      "number": 6,
+      "timestamp": 1572163962380,
+      "userId": "EZLQKi1b0",
+    }
+  `)
+
+  expect(thread.posts[6]).toMatchInlineSnapshot(`
+    Object {
+      "comma": 237,
+      "message": "別ワッチョイ",
+      "name": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲ 8f70-vDaD)",
+      "number": 7,
+      "timestamp": 1572164017237,
+      "userId": "EZLQKi1b0",
     }
   `)
 })
@@ -55,4 +108,33 @@ test("date parse", () => {
 
   expect(res).toMatchInlineSnapshot(`1572015607589`)
   expect(new Date(res)).toMatchInlineSnapshot(`2019-10-25T15:00:07.589Z`)
+})
+
+test("parseWacchoi", () => {
+  const res = parseWacchoi(
+    "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)"
+  )
+
+  expect(res).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "aa": "8f",
+        "bb": "70",
+        "cccc": "cmdO",
+        "main": "8f70-cmdO",
+        "nickname": "ﾜｯﾁｮｲWW",
+        "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+      },
+      "以下、5ちゃんねるからVIPがお送りします",
+    ]
+  `)
+
+  const resNone = parseWacchoi("以下、5ちゃんねるからVIPがお送りします")
+
+  expect(resNone).toMatchInlineSnapshot(`
+    Array [
+      false,
+      "以下、5ちゃんねるからVIPがお送りします",
+    ]
+  `)
 })

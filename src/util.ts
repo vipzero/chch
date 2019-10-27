@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { Wacchoi } from "./types"
 
 export function hosyuIntervalTimeMinute(hour: number, holiday = false): number {
   if (holiday) {
@@ -88,4 +89,16 @@ export const dateParse = (str: string): number => {
   )
 
   return date - 9 * 60 * 60 * 1000
+}
+
+// 以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)
+export const parseWacchoi = (name: string): [Wacchoi | false, string] => {
+  const m = /(.*) \((.*) ((..)(..)-(....))\)/.exec(name)
+
+  if (!m) {
+    return [false, name]
+  }
+  const [raw, base, nickname, main, aa, bb, cccc] = m
+
+  return [{ raw, nickname, aa, bb, cccc, main }, base]
 }
