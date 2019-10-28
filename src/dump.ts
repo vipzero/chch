@@ -128,7 +128,7 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
     const images = getImgUrls(message)
 
     if (img.length > 0) {
-      images.push(img.attr["src"])
+      images.push(img.attr("src"))
     }
 
     posts.push({
