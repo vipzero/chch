@@ -21,6 +21,7 @@ export type Post = {
   timestamp: number
   comma: number
   message: string
+  images: string[]
 }
 
 export type Thread = {

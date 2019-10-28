@@ -102,3 +102,15 @@ export const parseWacchoi = (name: string): [Wacchoi | false, string] => {
 
   return [{ raw, nickname, aa, bb, cccc, main }, base]
 }
+
+export function getImgUrls(text: string): string[] {
+  const rex = /(https?:\/\/.*?\.(?:png|jpg|gif))/g
+  const imgs: string[] = []
+
+  let m: null | RegExpExecArray = null
+
+  while ((m = rex.exec(text))) {
+    imgs.push(m[1])
+  }
+  return imgs
+}

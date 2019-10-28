@@ -4,7 +4,7 @@ import encoding from "encoding-japanese"
 
 import _ from "lodash"
 import { Post, Thread, PostName, ThreadMin } from "./types"
-import { normalizeUrl, dateParse, parseWacchoi } from "./util"
+import { normalizeUrl, dateParse, parseWacchoi, getImgUrls } from "./util"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
@@ -93,7 +93,7 @@ export async function getThreadPart4Vip(
     const comma = Number(dateStr.split(".")[1])
     const message = $dd.text().trim()
 
-    posts.push({ number, name, userId, timestamp, comma, message })
+    posts.push({ number, name, userId, timestamp, comma, message, images: [] })
   })
   const postCount = posts.length
 
@@ -124,6 +124,12 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
       .find(".message")
       .text()
       .trim()
+    const img = div.find(".message img").eq(0)
+    const images = getImgUrls(message)
+
+    if (img.length > 0) {
+      images.push(img.attr["src"])
+    }
 
     posts.push({
       number,
@@ -132,6 +138,7 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
       timestamp,
       comma,
       message,
+      images,
     })
   })
   const postCount = posts.length

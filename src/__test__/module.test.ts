@@ -29,6 +29,7 @@ test("get thread", async () => {
   expect(thread.posts[0]).toMatchInlineSnapshot(`
     Object {
       "comma": 691,
+      "images": Array [],
       "message": "テストスレです… VIPQ2_EXTDAT: checked:vvvvv:1000:512:: EXT was configured",
       "name": Object {
         "base": "以下、5ちゃんねるからVIPがお送りします (３級)",
@@ -51,6 +52,7 @@ test("get thread", async () => {
   expect(thread.posts[1]).toMatchInlineSnapshot(`
     Object {
       "comma": 618,
+      "images": Array [],
       "message": "偽名前",
       "name": Object {
         "base": "以下、5ちゃんねるからVIPがお送りします",
@@ -74,6 +76,7 @@ test("get thread", async () => {
   expect(thread.posts[2]).toMatchInlineSnapshot(`
     Object {
       "comma": 704,
+      "images": Array [],
       "message": "空名前",
       "name": Object {
         "base": "以下、5ちゃんねるからVIPがお送りします",
@@ -97,6 +100,7 @@ test("get thread", async () => {
   expect(thread.posts[3]).toMatchInlineSnapshot(`
     Object {
       "comma": 287,
+      "images": Array [],
       "message": "カスタム名前",
       "name": Object {
         "base": "カスタム",
@@ -120,6 +124,7 @@ test("get thread", async () => {
   expect(thread.posts[4]).toMatchInlineSnapshot(`
     Object {
       "comma": 977,
+      "images": Array [],
       "message": "さげ",
       "name": Object {
         "base": "以下、5ちゃんねるからVIPがお送りします",
@@ -143,6 +148,7 @@ test("get thread", async () => {
   expect(thread.posts[5]).toMatchInlineSnapshot(`
     Object {
       "comma": 380,
+      "images": Array [],
       "message": "#トリップ",
       "name": Object {
         "base": "トリップ ◆XSSH/ryx32 ",
@@ -166,6 +172,7 @@ test("get thread", async () => {
   expect(thread.posts[6]).toMatchInlineSnapshot(`
     Object {
       "comma": 237,
+      "images": Array [],
       "message": "別ワッチョイ",
       "name": Object {
         "base": "以下、5ちゃんねるからVIPがお送りします",
