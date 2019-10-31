@@ -55,7 +55,7 @@ function watcher(
   }
 }
 
-const nextTime = (num: number) => Math.min((min10 * 1000) / (num + 1), 60000)
+export const nextTime = (num: number) => Math.min(min10 / (num + 1), 60000)
 
 export const watchSmart = (
   threadURL: string,

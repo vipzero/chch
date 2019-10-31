@@ -4,6 +4,7 @@ import encoding from "encoding-japanese"
 import m from "../"
 import { client } from "../dump"
 import { dateParse, parseWacchoi } from "../util"
+import { nextTime } from "../watch"
 
 const url = "https://hebi.5ch.net/test/read.cgi/news4vip/1570005180"
 
@@ -228,4 +229,11 @@ test("parseWacchoi", () => {
       "以下、5ちゃんねるからVIPがお送りします",
     ]
   `)
+})
+
+test("nextTime", () => {
+  expect(nextTime(0)).toMatchInlineSnapshot(`60000`)
+  expect(nextTime(5)).toMatchInlineSnapshot(`60000`)
+  expect(nextTime(10)).toMatchInlineSnapshot(`54545.454545454544`)
+  expect(nextTime(20)).toMatchInlineSnapshot(`28571.428571428572`)
 })
