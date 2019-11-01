@@ -33,7 +33,7 @@ test("get thread", async () => {
       "images": Array [],
       "message": "テストスレです… VIPQ2_EXTDAT: checked:vvvvv:1000:512:: EXT was configured",
       "name": Object {
-        "base": "以下、5ちゃんねるからVIPがお送りします (３級)",
+        "base": "(ﾜｯﾁｮｲWW 8f70-cmdO)",
         "isDefault": false,
         "raw": "以下、5ちゃんねるからVIPがお送りします (３級) (ﾜｯﾁｮｲWW 8f70-cmdO)",
         "wacchoi": Object {
@@ -42,7 +42,7 @@ test("get thread", async () => {
           "cccc": "cmdO",
           "main": "8f70-cmdO",
           "nickname": "ﾜｯﾁｮｲWW",
-          "raw": "以下、5ちゃんねるからVIPがお送りします (３級) (ﾜｯﾁｮｲWW 8f70-cmdO)",
+          "raw": "以下、5ちゃんねるからVIPがお送りします (３級)",
         },
       },
       "number": 1,
@@ -56,8 +56,8 @@ test("get thread", async () => {
       "images": Array [],
       "message": "偽名前",
       "name": Object {
-        "base": "以下、5ちゃんねるからVIPがお送りします",
-        "isDefault": true,
+        "base": "(ﾜｯﾁｮｲWW 8f70-cmdO)",
+        "isDefault": false,
         "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
         "wacchoi": Object {
           "aa": "8f",
@@ -65,7 +65,7 @@ test("get thread", async () => {
           "cccc": "cmdO",
           "main": "8f70-cmdO",
           "nickname": "ﾜｯﾁｮｲWW",
-          "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+          "raw": "以下、5ちゃんねるからVIPがお送りします",
         },
       },
       "number": 2,
@@ -80,8 +80,8 @@ test("get thread", async () => {
       "images": Array [],
       "message": "空名前",
       "name": Object {
-        "base": "以下、5ちゃんねるからVIPがお送りします",
-        "isDefault": true,
+        "base": "(ﾜｯﾁｮｲWW 8f70-cmdO)",
+        "isDefault": false,
         "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
         "wacchoi": Object {
           "aa": "8f",
@@ -89,7 +89,7 @@ test("get thread", async () => {
           "cccc": "cmdO",
           "main": "8f70-cmdO",
           "nickname": "ﾜｯﾁｮｲWW",
-          "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+          "raw": "以下、5ちゃんねるからVIPがお送りします",
         },
       },
       "number": 3,
@@ -104,7 +104,7 @@ test("get thread", async () => {
       "images": Array [],
       "message": "カスタム名前",
       "name": Object {
-        "base": "カスタム",
+        "base": "(ﾜｯﾁｮｲWW 8f70-cmdO)",
         "isDefault": false,
         "raw": "カスタム (ﾜｯﾁｮｲWW 8f70-cmdO)",
         "wacchoi": Object {
@@ -113,7 +113,7 @@ test("get thread", async () => {
           "cccc": "cmdO",
           "main": "8f70-cmdO",
           "nickname": "ﾜｯﾁｮｲWW",
-          "raw": "カスタム (ﾜｯﾁｮｲWW 8f70-cmdO)",
+          "raw": "カスタム",
         },
       },
       "number": 4,
@@ -128,8 +128,8 @@ test("get thread", async () => {
       "images": Array [],
       "message": "さげ",
       "name": Object {
-        "base": "以下、5ちゃんねるからVIPがお送りします",
-        "isDefault": true,
+        "base": "(ﾜｯﾁｮｲWW 8f70-cmdO)",
+        "isDefault": false,
         "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
         "wacchoi": Object {
           "aa": "8f",
@@ -137,7 +137,7 @@ test("get thread", async () => {
           "cccc": "cmdO",
           "main": "8f70-cmdO",
           "nickname": "ﾜｯﾁｮｲWW",
-          "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+          "raw": "以下、5ちゃんねるからVIPがお送りします",
         },
       },
       "number": 5,
@@ -152,7 +152,7 @@ test("get thread", async () => {
       "images": Array [],
       "message": "#トリップ",
       "name": Object {
-        "base": "トリップ ◆XSSH/ryx32 ",
+        "base": "(ﾜｯﾁｮｲWW 8f70-cmdO)",
         "isDefault": false,
         "raw": "トリップ ◆XSSH/ryx32  (ﾜｯﾁｮｲWW 8f70-cmdO)",
         "wacchoi": Object {
@@ -161,7 +161,7 @@ test("get thread", async () => {
           "cccc": "cmdO",
           "main": "8f70-cmdO",
           "nickname": "ﾜｯﾁｮｲWW",
-          "raw": "トリップ ◆XSSH/ryx32  (ﾜｯﾁｮｲWW 8f70-cmdO)",
+          "raw": "トリップ ◆XSSH/ryx32 ",
         },
       },
       "number": 6,
@@ -176,8 +176,8 @@ test("get thread", async () => {
       "images": Array [],
       "message": "別ワッチョイ",
       "name": Object {
-        "base": "以下、5ちゃんねるからVIPがお送りします",
-        "isDefault": true,
+        "base": "(ﾜｯﾁｮｲ 8f70-vDaD)",
+        "isDefault": false,
         "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲ 8f70-vDaD)",
         "wacchoi": Object {
           "aa": "8f",
@@ -185,7 +185,7 @@ test("get thread", async () => {
           "cccc": "vDaD",
           "main": "8f70-vDaD",
           "nickname": "ﾜｯﾁｮｲ",
-          "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲ 8f70-vDaD)",
+          "raw": "以下、5ちゃんねるからVIPがお送りします",
         },
       },
       "number": 7,
@@ -215,9 +215,9 @@ test("parseWacchoi", () => {
         "cccc": "cmdO",
         "main": "8f70-cmdO",
         "nickname": "ﾜｯﾁｮｲWW",
-        "raw": "以下、5ちゃんねるからVIPがお送りします (ﾜｯﾁｮｲWW 8f70-cmdO)",
+        "raw": "以下、5ちゃんねるからVIPがお送りします",
       },
-      "以下、5ちゃんねるからVIPがお送りします",
+      "(ﾜｯﾁｮｲWW 8f70-cmdO)",
     ]
   `)
 
