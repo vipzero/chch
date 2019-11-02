@@ -9,7 +9,7 @@ const recentPostCount = (posts: Post[]) =>
 function watcher(
   threadURL: string,
   crawledCallback: CrawledCallback = () => {},
-  crawTimeFunc: (recentCount: number) => number
+  crawlTimeFunc: (recentCount: number) => number
 ) {
   const readed: Record<number, Post> = {}
   const memo = { nthCall: 0, next: 1, timeout: <NodeJS.Timeout | null>null }
@@ -34,8 +34,8 @@ function watcher(
       readed[post.number] = post
     })
     const recentCount10Min = recentPostCount(Object.values(readed))
-    const nextCallMs = crawTimeFunc(recentCount10Min)
-    const timeout = setTimeout(run, nextCallMs)
+    const nextCallMs = crawlTimeFunc(recentCount10Min)
+    const timeout = thread.finish ? null : setTimeout(run, nextCallMs)
 
     crawledCallback({
       nthCall: memo.nthCall,
@@ -43,6 +43,7 @@ function watcher(
       recentCount10Min,
       nextCallMs,
       timeout,
+      finish: thread.finish,
     })
     memo.nthCall++
     memo.timeout = timeout

@@ -29,6 +29,7 @@ export type Thread = {
   url: string
   postCount: number
   size: string
+  finish: boolean
   posts: Post[]
 }
 
@@ -44,5 +45,6 @@ export type CrawledCallback = (res: {
   newPosts: Post[]
   recentCount10Min: number
   nextCallMs: number
-  timeout: NodeJS.Timeout
+  timeout: NodeJS.Timeout | null
+  finish: boolean
 }) => void

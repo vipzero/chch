@@ -96,8 +96,10 @@ export async function getThreadPart4Vip(
     posts.push({ number, name, userId, timestamp, comma, message, images: [] })
   })
   const postCount = posts.length
+  // NOTE: パー速は finish 未対応
+  const finish = false
 
-  return { title, url, postCount, size, posts }
+  return { title, url, postCount, size, posts, finish }
 }
 
 export async function getThreadVip(url: string, from = 1): Promise<Thread> {
@@ -142,8 +144,9 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
     })
   })
   const postCount = posts.length
+  const finish = $(".stopdone").length > 0
 
-  return { title, url, postCount, size, posts }
+  return { title, url, postCount, size, posts, finish }
 }
 
 export function getThread(_url: string, from = 1) {

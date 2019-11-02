@@ -93,13 +93,16 @@ const crawledCallback: CrawledCallback = ({
   nthCall,
   recentCount10Min,
   nextCallMs,
+  finish,
 }) => {
   if (newPosts.length > 0 && cli.flags.command) {
     execSync(cli.flags.command)
   }
-  newPosts.forEach(post => {
-    console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
-  })
+  newPosts
+    .filter(p => p.number <= 1000)
+    .forEach(post => {
+      console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
+    })
   console.log(
     chalk.gray(
       `crawled ${nthCall}` +
@@ -110,6 +113,9 @@ const crawledCallback: CrawledCallback = ({
         ` => next ${chalk.underline(String(nextCallMs) + "ms")} ago`
     )
   )
+  if (finish) {
+    process.exit(0)
+  }
 }
 
 switch (cli.input[0]) {
