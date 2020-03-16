@@ -54,6 +54,8 @@ export async function getThreads() {
     }
     const { title, count } = res
     const href = a.attr("href")
+
+    if (!href) throw new Error("parse html error")
     const id = href.split("/")[0]
     const url = makeThreadUrl(id)
 
@@ -130,7 +132,11 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
     const images = getImgUrls(message)
 
     if (img.length > 0) {
-      images.push(img.attr("src"))
+      const imgurl = img.attr("src")
+
+      if (imgurl) {
+        images.push(imgurl)
+      }
     }
 
     posts.push({
