@@ -8,7 +8,9 @@ const recentPostCount = (posts: Post[]) =>
 
 function watcher(
   threadURL: string,
-  crawledCallback: CrawledCallback = () => {},
+  crawledCallback: CrawledCallback = () => {
+    // default empty
+  },
   crawlTimeFunc: (recentCount: number) => number
 ) {
   const readed: Record<number, Post> = {}
@@ -60,11 +62,15 @@ export const nextTime = (num: number) => Math.min(min10 / (num + 1), 60000)
 
 export const watchSmart = (
   threadURL: string,
-  crawledCallback: CrawledCallback = () => {}
+  crawledCallback: CrawledCallback = () => {
+    // default empty
+  }
 ) => watcher(threadURL, crawledCallback, nextTime)
 
 export const watch = (
   threadURL: string,
-  crawledCallback: CrawledCallback = () => {},
+  crawledCallback: CrawledCallback = () => {
+    // default empty
+  },
   intervalMs: number = 1 * 60 * 1000
 ) => watcher(threadURL, crawledCallback, () => intervalMs)
