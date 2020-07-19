@@ -15,11 +15,11 @@
   },
   "devDependencies": {
     "@types/cheerio": "0.22.21",
-    "@types/jest": "26.0.4",
+    "@types/jest": "26.0.5",
     "@types/lodash": "4.14.157",
     "@types/node": "13.13.5",
-    "axios-mock-adapter": "1.18.1",
-    "eslint": "7.4.0",
+    "axios-mock-adapter": "1.18.2",
+    "eslint": "7.5.0",
     "eslint-config-nzap": "3.2.0",
     "husky": "4.2.5",
     "jest": "25.5.4",
@@ -27,7 +27,7 @@
     "prettier": "1.19.1",
     "ts-jest": "25.5.1",
     "ts-node": "8.10.2",
-    "typescript": "3.9.6"
+    "typescript": "3.9.7"
   },
   "lint-staged": {
     "scripts/**/*.ts": [
