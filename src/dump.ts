@@ -7,11 +7,11 @@ import { Post, Thread, PostName, ThreadMin } from "./types"
 import { normalizeUrl, dateParse, parseWacchoi, getImgUrls } from "./util"
 
 const host = "http://hebi.5ch.net"
-const makeThreadUrl = id => `${host}/test/read.cgi/news4vip/${id}`
+const makeThreadUrl = (id) => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
 
 axios.defaults.responseType = "arraybuffer"
-axios.defaults.transformResponse = data =>
+axios.defaults.transformResponse = (data) =>
   encoding.convert(data, { to: "UNICODE", from: "SJIS", type: "string" })
 
 export const client = axios.create({ withCredentials: true })
@@ -40,8 +40,8 @@ const toName = (raw: string): PostName => {
   }
 }
 
-export async function getThreads() {
-  const res = await client.get(listPageUrl)
+export async function getThreads(url) {
+  const res = await client.get(url || listPageUrl)
   const $ = cheerio.load(res.data)
   const threads: ThreadMin[] = []
 
@@ -70,9 +70,7 @@ export async function getThreadPart4Vip(
 ): Promise<Thread> {
   const $ = cheerio.load((await client.get(`${url}${from}-`)).data)
 
-  const title = $("h1")
-    .text()
-    .trim()
+  const title = $("h1").text().trim()
   const size = $("font > b").text()
 
   const posts: Post[] = []
@@ -106,9 +104,7 @@ export async function getThreadPart4Vip(
 
 export async function getThreadVip(url: string, from = 1): Promise<Thread> {
   const $ = cheerio.load((await client.get(`${url}${from}-`)).data)
-  const title = $(".title")
-    .text()
-    .trim()
+  const title = $(".title").text().trim()
   const m = sizeRegex.exec($(".metastats.meta.centered").text())
   const size = m ? m[0] : ""
   const posts: Post[] = []
@@ -117,17 +113,11 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
     const div = $(elA)
     const number = Number(div.find(".number").text())
     const name = toName(div.find(".name").text())
-    const userId = div
-      .find(".uid")
-      .text()
-      .split(":")[1]
+    const userId = div.find(".uid").text().split(":")[1]
     const dateStr = div.find(".date").text()
     const timestamp = dateParse(dateStr)
     const comma = Number(dateStr.split(".")[1])
-    const message = div
-      .find(".message")
-      .text()
-      .trim()
+    const message = div.find(".message").text().trim()
     const img = div.find(".message img").eq(0)
     const images = getImgUrls(message)
 
@@ -180,7 +170,7 @@ const parseSetCookies = (
   if (!("set-cookie" in headers) || typeof headers["set-cookie"] === "string") {
     return []
   }
-  return headers["set-cookie"].map(v => v.split(";")[0])
+  return headers["set-cookie"].map((v) => v.split(";")[0])
 }
 
 export async function postMessage(url, message) {
@@ -225,11 +215,12 @@ export async function postMessage(url, message) {
     oekaki_thread1: "",
   }
   const form = generateForm(makeForm)
-  const post = headers => client.post<string | null>(bbsUrl, form, { headers })
+  const post = (headers) =>
+    client.post<string | null>(bbsUrl, form, { headers })
   const res = await post(headers)
 
   if (res.data && res.data.includes("書き込み確認")) {
-    parseSetCookies(res.headers).forEach(s => cookies.push(s))
+    parseSetCookies(res.headers).forEach((s) => cookies.push(s))
     headers.cookie = cookies.join("; ")
     await post(headers)
   }

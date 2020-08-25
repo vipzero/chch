@@ -99,8 +99,8 @@ const crawledCallback: CrawledCallback = ({
     execSync(cli.flags.command)
   }
   newPosts
-    .filter(p => p.number <= 1000)
-    .forEach(post => {
+    .filter((p) => p.number <= 1000)
+    .forEach((post) => {
       console.log(`${post.number}:${post.userId.substr(0, 3)}: ${post.message}`)
     })
   console.log(
@@ -123,12 +123,12 @@ switch (cli.input[0]) {
     hosyu(cli.input[1], cli.flags.text || "ほ")
     break
   case "dump":
-    getThread(cli.input[1]).then(ress => {
+    getThread(cli.input[1]).then((ress) => {
       console.log(JSON.stringify(ress, null, "\t"))
     })
     break
   case "dump-threads":
-    getThreads().then(res => {
+    getThreads(cli.input[1]).then((res) => {
       console.log(JSON.stringify(res, null, "\t"))
     })
     break
