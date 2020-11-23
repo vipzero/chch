@@ -41,10 +41,10 @@ export function hosyuIntervalTimeMinute(hour: number, holiday = false): number {
 const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 export function* increment(start = "a") {
-  const nexts = start.split("").map(v => chars.indexOf(v))
+  const nexts = start.split("").map((v) => chars.indexOf(v))
 
   while (true) {
-    const r = _.reverse(nexts.map(i => chars[i])).join("")
+    const r = _.reverse(nexts.map((i) => chars[i])).join("")
     const noUp = nexts.find((v, i) => {
       const nv = v + 1
 

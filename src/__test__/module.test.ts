@@ -1,7 +1,7 @@
 import fs from "fs"
 import MockAdapter from "axios-mock-adapter"
 import encoding from "encoding-japanese"
-import m from "../"
+import m from ".."
 import { client } from "../dump"
 import { dateParse, parseWacchoi } from "../util"
 import { nextTime } from "../watch"

@@ -3,7 +3,7 @@ import _ from "lodash"
 import { increment } from "./util"
 
 const sleep = (msec: number) =>
-  new Promise(resolve => setTimeout(resolve, msec))
+  new Promise((resolve) => setTimeout(resolve, msec))
 
 // ◆のマッチに適用する
 function regexPatch(str: string): string {

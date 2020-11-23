@@ -1,3 +1,4 @@
+type Timeout = ReturnType<typeof setTimeout>
 export type Wacchoi = {
   raw: string
   nickname: string
@@ -45,6 +46,6 @@ export type CrawledCallback = (res: {
   newPosts: Post[]
   recentCount10Min: number
   nextCallMs: number
-  timeout: NodeJS.Timeout | null
+  timeout: Timeout | null
   finish: boolean
 }) => void

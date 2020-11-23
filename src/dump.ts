@@ -45,7 +45,7 @@ export async function getThreads(url) {
   const $ = cheerio.load(res.data)
   const threads: ThreadMin[] = []
 
-  $("#trad > a").map((i, elA) => {
+  $("#trad > a").each((i, elA) => {
     const a = $(elA)
     const res = titleParse(a.text())
 
@@ -76,7 +76,7 @@ export async function getThreadPart4Vip(
   const posts: Post[] = []
 
   // console.log(_.zip($("dl > dt"), $("dl > dd")))
-  _.zip($("dl > dt"), $("dl > dd")).map(([dt, dd], i) => {
+  _.zip($("dl > dt"), $("dl > dd")).forEach(([dt, dd], i) => {
     if (!dd || !dt) {
       return
     }
@@ -109,7 +109,7 @@ export async function getThreadVip(url: string, from = 1): Promise<Thread> {
   const size = m ? m[0] : ""
   const posts: Post[] = []
 
-  $(".post").map((i, elA) => {
+  $(".post").each((i, elA) => {
     const div = $(elA)
     const number = Number(div.find(".number").text())
     const name = toName(div.find(".name").text())

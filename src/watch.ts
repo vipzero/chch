@@ -1,20 +1,21 @@
 import { getThread } from "./dump"
 import { Post, CrawledCallback } from "./types"
 
+type Timeout = ReturnType<typeof setTimeout>
+
 const min10 = 10 * 60 * 1000
 
 const recentPostCount = (posts: Post[]) =>
-  posts.filter(post => post.timestamp >= +Date.now() - min10).length
+  posts.filter((post) => post.timestamp >= +Date.now() - min10).length
 
 function watcher(
   threadURL: string,
-  crawledCallback: CrawledCallback = () => {
-    // default empty
-  },
+  crawledCallback: CrawledCallback,
   crawlTimeFunc: (recentCount: number) => number
 ) {
   const readed: Record<number, Post> = {}
-  const memo = { nthCall: 0, next: 1, timeout: <NodeJS.Timeout | null>null }
+
+  const memo = { nthCall: 0, next: 1, timeout: <Timeout | null>null }
 
   function stop() {
     if (!memo.timeout) {
@@ -32,7 +33,7 @@ function watcher(
     }
     const newPosts = thread.posts
 
-    newPosts.forEach(post => {
+    newPosts.forEach((post) => {
       readed[post.number] = post
     })
     const recentCount10Min = recentPostCount(Object.values(readed))
@@ -62,9 +63,7 @@ export const nextTime = (num: number) => Math.min(min10 / (num + 1), 60000)
 
 export const watchSmart = (
   threadURL: string,
-  crawledCallback: CrawledCallback = () => {
-    // default empty
-  }
+  crawledCallback: CrawledCallback
 ) => watcher(threadURL, crawledCallback, nextTime)
 
 export const watch = (
