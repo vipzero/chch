@@ -16,10 +16,10 @@
   "devDependencies": {
     "@types/cheerio": "0.22.23",
     "@types/jest": "26.0.19",
-    "@types/lodash": "4.14.166",
-    "@types/node": "14.14.16",
+    "@types/lodash": "4.14.167",
+    "@types/node": "14.14.19",
     "axios-mock-adapter": "1.19.0",
-    "eslint": "7.16.0",
+    "eslint": "7.17.0",
     "eslint-config-nzap": "4.3.1",
     "husky": "4.3.6",
     "jest": "26.6.3",
