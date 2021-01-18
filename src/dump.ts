@@ -186,19 +186,20 @@ export async function postMessage(url, message) {
   ]
   const headers = {
     accept:
-      "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
     "accept-encoding": "gzip, deflate, br",
-    "accept-language": "ja,en-US;q=0.9,en;q=0.8,es;q=0.7",
+    "accept-language": "ja,en-US;q=0.9,en;q=0.8",
     "cache-control": "max-age=0",
     "content-type": "application/x-www-form-urlencoded",
     origin,
     referer: url,
     "sec-fetch-mode": "navigate",
-    "sec-fetch-site": "same-origin",
+    "sec-fetch-site": "cross-site",
+    "sec-fetch-dest": "document",
     "sec-fetch-user": "?1",
     "upgrade-insecure-requests": "1",
     "User-Agent":
-      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 OPR/73.0.3856.284",
     cookie: cookies.join("; "),
   }
 
@@ -218,6 +219,8 @@ export async function postMessage(url, message) {
   const post = (headers) =>
     client.post<string | null>(bbsUrl, form, { headers })
   const res = await post(headers)
+
+  console.log(res.data)
 
   if (res.data && res.data.includes("書き込み確認")) {
     parseSetCookies(res.headers).forEach((s) => cookies.push(s))
