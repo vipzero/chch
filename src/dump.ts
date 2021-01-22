@@ -1,10 +1,9 @@
-import cheerio from "cheerio"
 import axios from "axios"
+import cheerio from "cheerio"
 import encoding from "encoding-japanese"
-
 import _ from "lodash"
-import { Post, Thread, PostName, ThreadMin } from "./types"
-import { normalizeUrl, dateParse, parseWacchoi, getImgUrls } from "./util"
+import { Post, PostName, Thread, ThreadMin } from "./types"
+import { dateParse, getImgUrls, normalizeUrl, parseWacchoi } from "./util"
 
 const host = "http://hebi.5ch.net"
 const makeThreadUrl = (id) => `${host}/test/read.cgi/news4vip/${id}`
@@ -164,42 +163,34 @@ function generateForm(data: Record<string, string>): URLSearchParams {
   return params
 }
 
-const parseSetCookies = (
-  headers: Record<string, string | string[]>
-): string[] => {
-  if (!("set-cookie" in headers) || typeof headers["set-cookie"] === "string") {
-    return []
-  }
-  return headers["set-cookie"].map((v) => v.split(";")[0])
-}
+const headersText = `
+accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+accept-encoding: gzip, deflate, br
+accept-language: ja,en-US;q=0.9,en;q=0.8
+cache-control: max-age=0
+content-type: application/x-www-form-urlencoded
+sec-fetch-mode: navigate
+sec-fetch-site: cross-site
+sec-fetch-dest: document
+sec-fetch-user: ?1
+upgrade-insecure-requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 OPR/73.0.3856.284
+`.trim()
+const baseHeader = headersText
+  .split("\n")
+  .map((line) => line.split(": "))
+  .reduce((p, [k, v]) => ({ ...p, [k]: v }), {})
 
 export async function postMessage(url, message) {
   const { origin, pathname } = new URL(url)
   const paths = _.compact(pathname.split("/"))
   const [thread, bbs] = _.reverse(paths)
   const bbsUrl = `${origin}/test/bbs.cgi`
-  const res0 = await client.get(url)
-  const cookies = [
-    ...parseSetCookies(res0.headers),
-    'READJS="off"',
-    "yuki=akari",
-  ]
+  const cookies = ["yuki=akari"]
   const headers = {
-    accept:
-      "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-    "accept-encoding": "gzip, deflate, br",
-    "accept-language": "ja,en-US;q=0.9,en;q=0.8",
-    "cache-control": "max-age=0",
-    "content-type": "application/x-www-form-urlencoded",
+    ...baseHeader,
     origin,
     referer: url,
-    "sec-fetch-mode": "navigate",
-    "sec-fetch-site": "cross-site",
-    "sec-fetch-dest": "document",
-    "sec-fetch-user": "?1",
-    "upgrade-insecure-requests": "1",
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 OPR/73.0.3856.284",
     cookie: cookies.join("; "),
   }
 
@@ -216,15 +207,12 @@ export async function postMessage(url, message) {
     oekaki_thread1: "",
   }
   const form = generateForm(makeForm)
-  const post = (headers) =>
-    client.post<string | null>(bbsUrl, form, { headers })
+  const post = (headers) => client.post<string>(bbsUrl, form, { headers })
   const res = await post(headers)
 
   console.log(res.data)
 
   if (res.data && res.data.includes("書き込み確認")) {
-    parseSetCookies(res.headers).forEach((s) => cookies.push(s))
-    headers.cookie = cookies.join("; ")
     await post(headers)
   }
 }
