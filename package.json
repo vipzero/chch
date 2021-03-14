@@ -14,12 +14,12 @@
     "meow": "^8.0.0"
   },
   "devDependencies": {
-    "@types/cheerio": "0.22.24",
+    "@types/cheerio": "0.22.27",
     "@types/jest": "26.0.20",
     "@types/lodash": "4.14.168",
-    "@types/node": "14.14.32",
+    "@types/node": "14.14.34",
     "axios-mock-adapter": "1.19.0",
-    "eslint": "7.21.0",
+    "eslint": "7.22.0",
     "eslint-config-nzap": "4.3.1",
     "husky": "4.3.8",
     "jest": "26.6.3",
