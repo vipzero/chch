@@ -16,7 +16,7 @@
   "devDependencies": {
     "@types/cheerio": "0.22.30",
     "@types/jest": "27.0.1",
-    "@types/lodash": "4.14.172",
+    "@types/lodash": "4.14.173",
     "@types/node": "16.7.10",
     "axios-mock-adapter": "1.20.0",
     "eslint": "7.32.0",
