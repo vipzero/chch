@@ -5,7 +5,7 @@ import _ from "lodash"
 import { Post, PostName, Thread, ThreadMin } from "./types"
 import { dateParse, getImgUrls, normalizeUrl, parseWacchoi } from "./util"
 
-const host = "http://hebi.5ch.net"
+const host = "http://mi.5ch.net"
 const makeThreadUrl = (id) => `${host}/test/read.cgi/news4vip/${id}`
 const listPageUrl = `${host}/news4vip/subback.html`
 
